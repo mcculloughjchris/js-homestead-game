@@ -191,7 +191,7 @@ export const roomValues: RoomValues = {
       e: "",
       w: ""
     },
-    boundary: []
+    boundary: ["s"]
   },
   porch3: {
     path: "porch3",

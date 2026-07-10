@@ -109,19 +109,21 @@ ipcMain.handle('keypress', async (e, data) => {
   const { key, game } = data
   const { currentLocation, currentDirection } = game
 
-  const room = roomValues[currentLocation]
+  const room = Object.values(roomValues).find((r) => r.path === currentLocation)
 
   let action = ""
 
   if (key === "w") { // player wants to move foward
     let newLocation = null
 
-    if (room.boundary !== undefined && room.boundary !== null) {
-      if (room.boundary.indexOf(currentDirection) === -1) {
+    if (room !== undefined) {
+      if (room.boundary !== undefined && room.boundary !== null) {
+        if (room.boundary.indexOf(currentDirection) === -1) {
+          newLocation = oneSpaceForward(currentLocation, currentDirection)
+        }
+      } else {
         newLocation = oneSpaceForward(currentLocation, currentDirection)
       }
-    } else {
-      newLocation = oneSpaceForward(currentLocation, currentDirection)
     }
 
     if (newLocation !== null) {
@@ -134,12 +136,14 @@ ipcMain.handle('keypress', async (e, data) => {
   if (key === "s") { // player wants to move backward
     let newLocation = null
 
-    if (room.boundary !== undefined && room.boundary !== null) {
-      if (room.boundary.indexOf(oppositeOf(currentDirection)) === 1) {
+    if (room !== undefined) {
+      if (room.boundary !== undefined && room.boundary !== null) {
+        if (room.boundary.indexOf(oppositeOf(currentDirection)) === 1) {
+          newLocation = oneSpaceBackward(currentLocation, currentDirection)
+        }
+      } else {
         newLocation = oneSpaceBackward(currentLocation, currentDirection)
       }
-    } else {
-      newLocation = oneSpaceBackward(currentLocation, currentDirection)
     }
 
     if (newLocation !== null) {
