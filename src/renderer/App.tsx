@@ -9,8 +9,6 @@ import { GameProvider } from './hooks/useGame';
 import { roomValues } from '../static/mapData';
 import LoadGameScreen from './components/LoadGameScreen';
 
-type Direction = "n" | "s" | "e" | "w"
-
 const paths = {
   intro: {
     path: "/",

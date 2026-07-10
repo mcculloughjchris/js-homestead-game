@@ -1,3 +1,5 @@
+export type Direction = "n" | "s" | "e" | "w"
+
 export interface RoomValues {
   [k: string]: {
     path: string
@@ -20,7 +22,7 @@ export const roomValues: RoomValues = {
       e: "",
       w: ""
     },
-    boundary: ["n", "e"]
+    boundary: ["n", "w"]
   },
   lroom1: {
     path: "lroom1",
@@ -78,7 +80,8 @@ export const roomValues: RoomValues = {
       s: "",
       e: "",
       w: ""
-    }
+    },
+    boundary: []
   },
   bedroom: {
     path: "bedroom",
@@ -107,7 +110,8 @@ export const roomValues: RoomValues = {
       s: "",
       e: "",
       w: ""
-    }
+    },
+    boundary: []
   },
   kitchen1: {
     path: "kitchen1",
@@ -186,7 +190,8 @@ export const roomValues: RoomValues = {
       s: "",
       e: "",
       w: ""
-    }
+    },
+    boundary: []
   },
   porch3: {
     path: "porch3",

@@ -116,7 +116,7 @@ ipcMain.handle('keypress', async (e, data) => {
   if (key === "w") { // player wants to move foward
     let newLocation = null
 
-    if (room.boundary !== undefined) {
+    if (room.boundary !== undefined && room.boundary !== null) {
       if (room.boundary.indexOf(currentDirection) === -1) {
         newLocation = oneSpaceForward(currentLocation, currentDirection)
       }
@@ -134,7 +134,7 @@ ipcMain.handle('keypress', async (e, data) => {
   if (key === "s") { // player wants to move backward
     let newLocation = null
 
-    if (room.boundary !== undefined) {
+    if (room.boundary !== undefined && room.boundary !== null) {
       if (room.boundary.indexOf(oppositeOf(currentDirection)) === 1) {
         newLocation = oneSpaceBackward(currentLocation, currentDirection)
       }

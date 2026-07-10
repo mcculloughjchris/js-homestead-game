@@ -22,7 +22,7 @@ const useLoadGame = (id: string | undefined) => {
     load()
   }, [id])
 
-  return { game, loading }
+  return { game, loading, setGame }
 }
 
 export default useLoadGame

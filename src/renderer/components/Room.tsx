@@ -8,7 +8,7 @@ interface RoomProps {
 }
 
 const Room = ({ facing, data = null, ...args }: RoomProps) => {
-  const { game, loading } = useGame()
+  const { game, loading, setGame } = useGame()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -19,10 +19,16 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
         game
       })
 
-      if (result !== undefined) {
-        if (result.hasOwnProperty('newDirection')) {
-          navigate(`/${game.id}/${game.currentLocation}/${result.newDirection}`)
-        }
+      if (result === undefined) return
+
+      console.log(result)
+
+      if (result.hasOwnProperty('newLocation')) {
+        setGame({ ...game, currentLocation: result.newLocation })
+        navigate(`/${game.id}/${result.newLocation}/${game.currentDirection}`)
+      } else if (result.hasOwnProperty('newDirection')) {
+        setGame({ ...game, currentDirection: result.newDirection })
+        navigate(`/${game.id}/${game.currentLocation}/${result.newDirection}`)
       }
     }
 

@@ -25,8 +25,8 @@ export const oppositeOf = (input: NEWS) => {
 
 export const leftOf = (input: NEWS) => {
   if (input === "n") return "w"
-  if (input === "e") return "s"
-  if (input === "w") return "n"
+  if (input === "e") return "n"
+  if (input === "w") return "s"
   if (input === "s") return "e"
   return input
 }
@@ -52,7 +52,7 @@ export const oneSpaceForward = (currentLocation: string, currentDirection: NEWS)
   if (currentDirection == "e") currentIndex[1] += 1
   if (currentDirection == "w") currentIndex[1] -= 1
 
-  return gameMap[currentIndex[0]][currentIndex[1]]
+  return gameMap[currentIndex[0]][currentIndex[1]].path
 }
 
 export const oneSpaceBackward = (currentLocation: string, currentDirection: NEWS) => {
@@ -63,5 +63,5 @@ export const oneSpaceBackward = (currentLocation: string, currentDirection: NEWS
   if (currentDirection == "e") currentIndex[1] -= 1
   if (currentDirection == "w") currentIndex[1] += 1
 
-  return gameMap[currentIndex[0]][currentIndex[1]]
+  return gameMap[currentIndex[0]][currentIndex[1]].path
 }

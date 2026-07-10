@@ -5,16 +5,17 @@ import useLoadGame from "./useLoadGame"
 interface GameContextValue {
   game: any
   loading: boolean
+  setGame: (game: any) => void
 }
 
 const GameContext = createContext<GameContextValue | null>(null)
 
 export const GameProvider = () => {
   const { id } = useParams()
-  const { game, loading } = useLoadGame(id)
+  const { game, loading, setGame } = useLoadGame(id)
 
   return (
-    <GameContext.Provider value={{ game, loading }}>
+    <GameContext.Provider value={{ game, loading, setGame }}>
       <Outlet />
     </GameContext.Provider>
   )
