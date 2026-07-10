@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import useGame from "../hooks/useGame"
 import { useLocation, useNavigate } from "react-router-dom"
+import Overlay from "./Overlay"
 
 interface RoomProps {
   facing: "n" | "s" | "e" | "w"
@@ -46,7 +47,13 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
   }
 
   return (
-    <div>{game.currentLocation}, {game.currentDirection}</div>
+    <div>
+      {game.currentLocation}, {game.currentDirection}
+      <Overlay
+        currentDirection={game.currentDirection}
+        currentLocation={game.currentLocation}
+      />
+    </div>
   )
 }
 

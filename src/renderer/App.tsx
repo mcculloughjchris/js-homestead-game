@@ -9,6 +9,8 @@ import { GameProvider } from './hooks/useGame';
 import { roomValues } from '../static/mapData';
 import LoadGameScreen from './components/LoadGameScreen';
 
+import "./App.css"
+
 const paths = {
   intro: {
     path: "/",

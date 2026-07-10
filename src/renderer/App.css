@@ -1,62 +1,44 @@
-/*
- * @NOTE: Prepend a `~` to css file paths that are in your node_modules
- *        See https://github.com/webpack-contrib/sass-loader#imports
- */
-body {
-  position: relative;
-  color: white;
-  height: 100vh;
-  background: linear-gradient(
-    200.96deg,
-    #fedc2a -29.09%,
-    #dd5789 51.77%,
-    #7a2c9e 129.35%
-  );
-  font-family: sans-serif;
-  overflow-y: hidden;
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.map {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.map-col {
+  display: flex;
+}
+
+.map-row {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 50px;
+  height: 50px;
+  margin-right: -1px;
+  margin-bottom: -1px;
+  border: 1px solid #eeeeee;
 }
 
-button {
-  background-color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  appearance: none;
-  font-size: 1.3rem;
-  box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
-    0px 18px 88px -4px rgba(24, 39, 75, 0.14);
-  transition: all ease-in 0.1s;
-  cursor: pointer;
-  opacity: 0.9;
+.boundary-n {
+  border-top: 1px solid #000000;
 }
 
-button:hover {
-  transform: scale(1.05);
-  opacity: 1;
+.boundary-s {
+  border-bottom: 1px solid #000000;
 }
 
-li {
-  list-style: none;
+.boundary-e {
+  border-right: 1px solid #000000;
 }
 
-a {
-  text-decoration: none;
-  height: fit-content;
-  width: fit-content;
-  margin: 10px;
-}
-
-a:hover {
-  opacity: 1;
-  text-decoration: none;
-}
-
-.Hello {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
+.boundary-w {
+  border-left: 1px solid #000000;
 }
