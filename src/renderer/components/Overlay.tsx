@@ -22,7 +22,9 @@ const Overlay = ({ currentLocation, currentDirection }: OverlayProps) => {
                     className={`map-row ${boundaryClassName}`}
                     key={`row-${index}-col-${iindex}`}
                   >
-                    {currentLocation === col.path ? "x" : ""}
+                    {currentLocation === col.path ? (
+                      <div className={`player player-${currentDirection}`}>&gt;</div>
+                    ) : ""}
                   </div>
                 )
               })}

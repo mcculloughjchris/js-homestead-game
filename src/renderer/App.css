@@ -42,3 +42,15 @@
 .boundary-w {
   border-left: 1px solid #000000;
 }
+
+.player-n {
+  transform: rotate(-90deg);
+}
+
+.player-s {
+  transform: rotate(90deg);
+}
+
+.player-w {
+  transform: rotate(-180deg);
+}

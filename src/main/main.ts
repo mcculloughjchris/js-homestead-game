@@ -138,7 +138,7 @@ ipcMain.handle('keypress', async (e, data) => {
 
     if (room !== undefined) {
       if (room.boundary !== undefined && room.boundary !== null) {
-        if (room.boundary.indexOf(oppositeOf(currentDirection)) === 1) {
+        if (room.boundary.indexOf(oppositeOf(currentDirection)) === -1) {
           newLocation = oneSpaceBackward(currentLocation, currentDirection)
         }
       } else {

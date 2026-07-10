@@ -50,7 +50,7 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
     <div>
       {game.currentLocation}, {game.currentDirection}
       <Overlay
-        currentDirection={game.currentDirection}
+        currentDirection={facing}
         currentLocation={game.currentLocation}
       />
     </div>
