@@ -1,7 +1,8 @@
-import { useEffect } from "react"
+import { ElementType, useEffect, useState } from "react"
 import useGame from "../hooks/useGame"
 import { useLocation, useNavigate } from "react-router-dom"
 import Overlay from "./Overlay"
+import { RoomValue, roomValues } from "../../static/mapData"
 
 interface RoomProps {
   facing: "n" | "s" | "e" | "w"
@@ -10,8 +11,16 @@ interface RoomProps {
 
 const Room = ({ facing, data = null, ...args }: RoomProps) => {
   const { game, loading, setGame } = useGame()
+
   const navigate = useNavigate()
   const location = useLocation()
+
+  const [ room, setRoom ] = useState<RoomValue>()
+
+  useEffect(() => {
+    const [ _id, roomName, direction ] = location.pathname.split("/").filter(x => x !== "")
+    setRoom(Object.values(roomValues).find(x => x.path == roomName))
+  }, [ location ])
 
   useEffect(() => {
     const handleKeyPress = async ({ key }) => {
@@ -21,8 +30,6 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
       })
 
       if (result === undefined) return
-
-      console.log(result)
 
       if (result.hasOwnProperty('newLocation')) {
         setGame({ ...game, currentLocation: result.newLocation })
@@ -46,9 +53,24 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
     )
   }
 
+  const renderImage = () => {
+    console.log(typeof room?.images[facing])
+    if (typeof room?.images[facing] === "string") {
+      return (
+        <img src={room?.images[facing]} />
+      )
+    } else {
+      const RenderedRoom = room?.images[facing] as ElementType
+      return (
+        <RenderedRoom />
+      )
+    }
+  }
+
   return (
     <div>
       {game.currentLocation}, {game.currentDirection}
+      {renderImage()}
       <Overlay
         currentDirection={facing}
         currentLocation={game.currentLocation}

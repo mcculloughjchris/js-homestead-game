@@ -30,24 +30,22 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
-
-ipcMain.handle('trigger-new-game', async (e, name) => {
-  const data = {
+const newGameData = (name: string) => {
+  return {
     id: randomUUID(),
     name: name,
     tutorialed: false,
     hunger: 100,
     thirst: 100,
     money: 100,
-    day: 0,
+    days: [],
     currentLocation: "lroom0",
     currentDirection: "s"
   }
+}
+
+ipcMain.handle('trigger-new-game', async (e, name) => {
+  const data = newGameData(name)
 
   try {
     await fs.promises.mkdir(savePath)

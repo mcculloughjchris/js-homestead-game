@@ -1,23 +1,27 @@
+import LRoom0North from "../renderer/components/rooms/LRoom0North"
+
 export type Direction = "n" | "s" | "e" | "w"
 
+export interface RoomValue {
+  path: string
+  images: {
+    n: string | React.ElementType
+    s: string | React.ElementType
+    e: string | React.ElementType
+    w: string | React.ElementType
+  },
+  boundary?: Direction[]
+}
+
 export interface RoomValues {
-  [k: string]: {
-    path: string
-    images: {
-      n: string
-      s: string
-      e: string
-      w: string
-    },
-    boundary?: Direction[]
-  }
+  [k: string]: RoomValue
 }
 
 export const roomValues: RoomValues = {
   lroom0: {
     path: "lroom0",
     images: {
-      n: "",
+      n: LRoom0North,
       s: "",
       e: "",
       w: ""
