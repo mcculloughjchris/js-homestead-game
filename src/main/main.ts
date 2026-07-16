@@ -17,6 +17,7 @@ import MenuBuilder from './menu';
 import { leftOf, oneSpaceBackward, oneSpaceForward, oppositeOf, resolveHtmlPath, rightOf } from './util';
 import { randomUUID } from 'crypto';
 import { roomValues } from '../static/mapData';
+import playerActions from '../static/playerActions';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -38,7 +39,9 @@ const newGameData = (name: string) => {
     hunger: 100,
     thirst: 100,
     money: 100,
-    days: [],
+    days: [
+      []
+    ],
     currentLocation: "lroom0",
     currentDirection: "s"
   }
@@ -125,8 +128,12 @@ ipcMain.handle('keypress', async (e, data) => {
     }
 
     if (newLocation !== null) {
+      const days = [...game.days]
+      days[days.length - 1] = [...days[days.length - 1], playerActions.move]
+
       return {
-        newLocation
+        newLocation,
+        days
       }
     }
   }
@@ -145,8 +152,12 @@ ipcMain.handle('keypress', async (e, data) => {
     }
 
     if (newLocation !== null) {
+      const days = [...game.days]
+      days[days.length - 1] = [...days[days.length - 1], playerActions.move]
+
       return {
-        newLocation
+        newLocation,
+        days
       }
     }
   }

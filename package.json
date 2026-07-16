@@ -108,7 +108,8 @@
     "fs": "^0.0.1-security",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.3.0"
+    "react-router-dom": "^7.3.0",
+    "the-new-css-reset": "^1.11.3"
   },
   "devDependencies": {
     "@electron/rebuild": "^3.7.1",

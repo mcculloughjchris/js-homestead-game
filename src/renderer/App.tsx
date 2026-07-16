@@ -4,7 +4,6 @@ import Introduction from './components/Introduction';
 import TitleScreen from './components/TitleScreen';
 import NewGameScreen from './components/NewGameScreen';
 import Room from './components/Room';
-import { useEffect } from 'react';
 import { GameProvider } from './hooks/useGame';
 import { roomValues } from '../static/mapData';
 import LoadGameScreen from './components/LoadGameScreen';

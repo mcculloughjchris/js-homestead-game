@@ -3,6 +3,7 @@ import useGame from "../hooks/useGame"
 import { useLocation, useNavigate } from "react-router-dom"
 import Overlay from "./Overlay"
 import { RoomValue, roomValues } from "../../static/mapData"
+import DebugOverlay from "../utils/DebugOverlay"
 
 interface RoomProps {
   facing: "n" | "s" | "e" | "w"
@@ -23,6 +24,8 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
   }, [ location ])
 
   useEffect(() => {
+    console.log('game data changed', game)
+
     const handleKeyPress = async ({ key }) => {
       const result = await window.electron.ipcRenderer.invoke("keypress", {
         key,
@@ -32,7 +35,11 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
       if (result === undefined) return
 
       if (result.hasOwnProperty('newLocation')) {
-        setGame({ ...game, currentLocation: result.newLocation })
+        setGame({
+          ...game,
+          currentLocation: result.newLocation,
+          ...(result.hasOwnProperty('days') ? { days: result.days } : {})
+        })
         navigate(`/${game.id}/${result.newLocation}/${game.currentDirection}`)
       } else if (result.hasOwnProperty('newDirection')) {
         setGame({ ...game, currentDirection: result.newDirection })
@@ -54,7 +61,6 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
   }
 
   const renderImage = () => {
-    console.log(typeof room?.images[facing])
     if (typeof room?.images[facing] === "string") {
       return (
         <img src={room?.images[facing]} />
@@ -74,7 +80,9 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
       <Overlay
         currentDirection={facing}
         currentLocation={game.currentLocation}
+        days={game.days}
       />
+      <DebugOverlay />
     </div>
   )
 }

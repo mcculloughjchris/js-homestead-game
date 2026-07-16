@@ -1,9 +1,24 @@
+@import "the-new-css-reset/css/reset.css";
+
+button {
+  border: 1px solid #000000;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+}
+
 .overlay {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.time {
+  position: fixed;
+  bottom: 13rem;
+  right: 5rem;
+  font-size: 24px;
 }
 
 .map {

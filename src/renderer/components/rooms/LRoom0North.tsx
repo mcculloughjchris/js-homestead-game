@@ -1,6 +1,10 @@
 const LRoom0North = () => {
   return (
-    <p>lroom0 north</p>
+    <div>
+      <div className="door">
+
+      </div>
+    </div>
   )
 }
 
