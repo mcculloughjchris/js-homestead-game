@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react"
-import { useParams, Outlet } from "react-router-dom"
+import { createContext, useContext, useEffect } from "react"
+import { useParams, Outlet, useLocation } from "react-router-dom"
 import useLoadGame from "./useLoadGame"
 
 interface GameContextValue {
@@ -13,6 +13,39 @@ const GameContext = createContext<GameContextValue | null>(null)
 export const GameProvider = () => {
   const { id } = useParams()
   const { game, loading, setGame } = useLoadGame(id)
+
+  const location = useLocation()
+
+  const handleGameDidSave = (e) => {
+    setGame(e.detail.data)
+  }
+
+  const handleUpdateGameData = (e) => {
+    setGame(e.detail.data)
+  }
+
+  useEffect(() => {
+    window.addEventListener('saved', handleGameDidSave)
+    window.addEventListener('update-game-data', handleUpdateGameData)
+
+    return () => {
+      window.removeEventListener('saved', handleGameDidSave)
+      window.removeEventListener('update-game-data', handleUpdateGameData)
+    }
+  }, [])
+
+  useEffect(() => {
+    const { pathname } = location
+    const [ id, room, direction ] = pathname.split("/").filter(s => s !== "")
+
+    console.log(room, direction)
+
+    setGame({
+      ...game,
+      currentLocation: room,
+      currentDirection: direction
+    })
+  }, [ location ])
 
   return (
     <GameContext.Provider value={{ game, loading, setGame }}>

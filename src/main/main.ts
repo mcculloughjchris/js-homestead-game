@@ -18,6 +18,7 @@ import { leftOf, oneSpaceBackward, oneSpaceForward, oppositeOf, resolveHtmlPath,
 import { randomUUID } from 'crypto';
 import { roomValues } from '../static/mapData';
 import playerActions from '../static/playerActions';
+import characters, { Character } from '../static/characterData';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -32,6 +33,11 @@ class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 const newGameData = (name: string) => {
+  const characterPositions = () => Object.values(characters).map((c: Character) => ({
+    name: c.name,
+    position: null
+  }))
+
   return {
     id: randomUUID(),
     name: name,
@@ -39,14 +45,17 @@ const newGameData = (name: string) => {
     hunger: 100,
     thirst: 100,
     money: 100,
-    days: [
-      []
-    ],
+    days: [[]],
+    saves: 0,
     currentLocation: "lroom0",
-    currentDirection: "s"
+    currentDirection: "s",
+    currentDoor: null,
+    characterPositions: characterPositions(),
+    completedConvos: []
   }
 }
 
+// Trigger a new game
 ipcMain.handle('trigger-new-game', async (e, name) => {
   const data = newGameData(name)
 
@@ -69,10 +78,15 @@ ipcMain.handle('trigger-new-game', async (e, name) => {
   return data
 })
 
+// Save the game
 ipcMain.handle('save-game', async (e, data) => {
-  console.log(data)
+  const filePath = path.join(savePath, `${data.id}.json`)
+  data.saves += 1
+  await fs.promises.writeFile(filePath, JSON.stringify(data))
+  return data
 })
 
+// Load a game
 ipcMain.handle('load-game', async (e, id) => {
   const filePath = path.join(savePath, `${id}.json`)
 
@@ -83,6 +97,7 @@ ipcMain.handle('load-game', async (e, id) => {
   return data
 })
 
+// List the available game saves
 ipcMain.handle('list-saves', async () => {
   const listFile = await fs.promises.readFile(path.join(savePath, `saves.json`), { encoding: null })
   const text = new TextDecoder('utf-8').decode(listFile)
@@ -106,13 +121,12 @@ ipcMain.handle('list-saves', async () => {
   return response
 })
 
+// Handle a keypress
 ipcMain.handle('keypress', async (e, data) => {
   const { key, game } = data
   const { currentLocation, currentDirection } = game
 
   const room = Object.values(roomValues).find((r) => r.path === currentLocation)
-
-  let action = ""
 
   if (key === "w") { // player wants to move foward
     let newLocation = null
@@ -177,6 +191,37 @@ ipcMain.handle('keypress', async (e, data) => {
       newDirection
     }
   }
+})
+
+// Trigger a door knock
+ipcMain.handle('trigger-door-knock', (_e, gameData) => {
+  const availableCharacters = gameData.characterPositions.filter(c => c.position === null)
+  const chosenCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
+
+  console.log(gameData)
+
+  gameData.characterPositions = gameData.characterPositions.map((c: any) => ({
+    ...c,
+    position: chosenCharacter.name == c.name ? 'front-door' : c.position
+  }))
+
+  mainWindow?.webContents.send('door-knock', gameData)
+})
+
+// Start a conversation
+ipcMain.handle('convo-start', (_e, characterName, game) => {
+  const character = characters[characterName]
+  if (!character) return
+
+  // no introduction yet, start that convo
+  const introConvo = `${character.name.toLowerCase()}_introduction`
+  if (game.completedConvos.indexOf(introConvo) === -1) {
+    return character.conversations?.find(c => c.id === introConvo)
+  }
+})
+
+ipcMain.handle('quit', () => {
+  app.quit()
 })
 
 if (process.env.NODE_ENV === 'production') {

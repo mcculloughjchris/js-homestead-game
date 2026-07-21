@@ -1,4 +1,28 @@
-import LRoom0North from "../renderer/components/rooms/LRoom0North"
+import FrontDoorNorth from "../renderer/components/rooms/FrontDoor/FrontDoorNorth"
+import LRoom0East from "../renderer/components/rooms/LRoom0/LRoom0East"
+import LRoom0North from "../renderer/components/rooms/LRoom0/LRoom0North"
+import LRoom0South from "../renderer/components/rooms/LRoom0/LRoom0South"
+import LRoom0West from "../renderer/components/rooms/LRoom0/LRoom0West"
+import LRoom1East from "../renderer/components/rooms/LRoom1/LRoom1East"
+import LRoom1North from "../renderer/components/rooms/LRoom1/LRoom1North"
+import LRoom1South from "../renderer/components/rooms/LRoom1/LRoom1South"
+import LRoom1West from "../renderer/components/rooms/LRoom1/LRoom1West"
+import LRoom2East from "../renderer/components/rooms/LRoom2/LRoom2East"
+import LRoom2North from "../renderer/components/rooms/LRoom2/LRoom2North"
+import LRoom2South from "../renderer/components/rooms/LRoom2/LRoom2South"
+import LRoom2West from "../renderer/components/rooms/LRoom2/LRoom2West"
+import LRoom3East from "../renderer/components/rooms/LRoom3/LRoom3East"
+import LRoom3North from "../renderer/components/rooms/LRoom3/LRoom3North"
+import LRoom3South from "../renderer/components/rooms/LRoom3/LRoom3South"
+import LRoom3West from "../renderer/components/rooms/LRoom3/LRoom3West"
+import LRoom4East from "../renderer/components/rooms/LRoom4/LRoom4East"
+import LRoom4North from "../renderer/components/rooms/LRoom4/LRoom4North"
+import LRoom4South from "../renderer/components/rooms/LRoom4/LRoom4South"
+import LRoom4West from "../renderer/components/rooms/LRoom4/LRoom4West"
+import LRoom5East from "../renderer/components/rooms/LRoom5/LRoom5East"
+import LRoom5North from "../renderer/components/rooms/LRoom5/LRoom5North"
+import LRoom5South from "../renderer/components/rooms/LRoom5/LRoom5South"
+import LRoom5West from "../renderer/components/rooms/LRoom5/LRoom5West"
 
 export type Direction = "n" | "s" | "e" | "w"
 
@@ -22,65 +46,65 @@ export const roomValues: RoomValues = {
     path: "lroom0",
     images: {
       n: LRoom0North,
-      s: "",
-      e: "",
-      w: ""
+      s: LRoom0South,
+      e: LRoom0East,
+      w: LRoom0West
     },
     boundary: ["n", "w"]
   },
   lroom1: {
     path: "lroom1",
     images: {
-      n: "",
-      s: "",
-      e: "",
-      w: ""
+      n: LRoom1North,
+      s: LRoom1South,
+      e: LRoom1East,
+      w: LRoom1West
     },
     boundary: ["n"]
   },
   lroom2: {
     path: "lroom2",
     images: {
-      n: "",
-      s: "",
-      e: "",
-      w: ""
+      n: LRoom2North,
+      s: LRoom2South,
+      e: LRoom2East,
+      w: LRoom2West
     },
     boundary: ["w"]
   },
   lroom3: {
     path: "lroom3",
     images: {
-      n: "",
-      s: "",
-      e: "",
-      w: ""
+      n: LRoom3North,
+      s: LRoom3South,
+      e: LRoom3East,
+      w: LRoom3West
     },
   },
   lroom4: {
     path: "lroom4",
     images: {
-      n: "",
-      s: "",
-      e: "",
-      w: ""
+      n: LRoom4North,
+      s: LRoom4South,
+      e: LRoom4East,
+      w: LRoom4West
     },
     boundary: ["s", "w"]
   },
   lroom5: {
     path: "lroom5",
     images: {
-      n: "",
-      s: "",
-      e: "",
-      w: ""
+      n: LRoom5North,
+      s: LRoom5South,
+      e: LRoom5East,
+      w: LRoom5West
     },
     boundary: ["s", "e"]
   },
   frontDoor: {
     path: "front-door",
     images: {
-      n: "",
+      n: FrontDoorNorth,
       s: "",
       e: "",
       w: ""

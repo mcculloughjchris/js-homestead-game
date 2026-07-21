@@ -1,6 +1,6 @@
 export interface PlayerAction {
   id: string
-  cost: number
+  timeCost: number
 }
 
 export interface PlayerActions {
@@ -10,7 +10,7 @@ export interface PlayerActions {
 const playerActions: PlayerActions = {
   'move': {
     id: 'move',
-    cost: 0.01
+    timeCost: 1
   }
 }
 

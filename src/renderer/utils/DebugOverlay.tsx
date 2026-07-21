@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react"
 
-const DebugOverlay = () => {
+interface DebugOverlayProps {
+  game: any
+}
+
+const DebugOverlay = ({ game }: DebugOverlayProps) => {
   const [active, setActive] = useState(false)
 
   useEffect(() => {
@@ -11,7 +15,11 @@ const DebugOverlay = () => {
     window.disableDebugger = () => {
       setActive(false)
     }
-  }, [])
+
+    window.triggerDoorKnock = () => {
+      window.electron.ipcRenderer.invoke('trigger-door-knock', game)
+    }
+  }, [ game ])
 
   if (active) {
     return (

@@ -4,10 +4,16 @@ import { useLocation, useNavigate } from "react-router-dom"
 import Overlay from "./Overlay"
 import { RoomValue, roomValues } from "../../static/mapData"
 import DebugOverlay from "../utils/DebugOverlay"
+import Toasts from "./Toasts"
+import PauseMenu from "./PauseMenu"
 
 interface RoomProps {
   facing: "n" | "s" | "e" | "w"
   data?: any
+}
+
+export interface RenderedRoomProps {
+  game: any
 }
 
 const Room = ({ facing, data = null, ...args }: RoomProps) => {
@@ -17,6 +23,21 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
   const location = useLocation()
 
   const [ room, setRoom ] = useState<RoomValue>()
+  const [ escapeKeyDown, setEscapeKeyDown ] = useState<boolean>(false)
+  const [ paused, setPaused ] = useState<boolean>(false)
+
+  useEffect(() => {
+    const handleDoorKnock = async (data) => {
+      const e = new CustomEvent('update-game-data', {
+        detail: {
+          data: data
+        }
+      })
+      window.dispatchEvent(e)
+    }
+
+    window.electron.ipcRenderer.on('door-knock', handleDoorKnock)
+  }, [])
 
   useEffect(() => {
     const [ _id, roomName, direction ] = location.pathname.split("/").filter(x => x !== "")
@@ -27,6 +48,10 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
     console.log('game data changed', game)
 
     const handleKeyPress = async ({ key }) => {
+      if (key === "escape") {
+        console.log('escape')
+      }
+
       const result = await window.electron.ipcRenderer.invoke("keypress", {
         key,
         game
@@ -47,12 +72,33 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
       }
     }
 
+    const handleKeyDown = ({ key }) => {
+      if (key.toLowerCase() === 'escape') {
+        if (escapeKeyDown === false) {
+          setEscapeKeyDown(true)
+        }
+      }
+    }
+
+    const handleKeyUp = ({ key }) => {
+      if (key.toLowerCase() === 'escape') {
+        if (escapeKeyDown === true) {
+          setEscapeKeyDown(false)
+          setPaused(!paused)
+        }
+      }
+    }
+
     window.addEventListener('keypress', handleKeyPress)
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
 
     return () => {
       window.removeEventListener('keypress', handleKeyPress)
+      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keyup', handleKeyUp)
     }
-  }, [ game ])
+  }, [ game, paused, escapeKeyDown ])
 
   if (loading) {
     return (
@@ -68,7 +114,9 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
     } else {
       const RenderedRoom = room?.images[facing] as ElementType
       return (
-        <RenderedRoom />
+        <RenderedRoom
+          game={game}
+        />
       )
     }
   }
@@ -82,7 +130,13 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
         currentLocation={game.currentLocation}
         days={game.days}
       />
-      <DebugOverlay />
+      <DebugOverlay
+        game={game}
+      />
+      <Toasts />
+      <PauseMenu
+        paused={paused}
+      />
     </div>
   )
 }
