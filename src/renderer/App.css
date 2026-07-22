@@ -1,5 +1,13 @@
 @import "the-new-css-reset/css/reset.css";
 
+.title-screen {
+  background-image: url('../../assets/screens/title-screen.jpg');
+  width: 100vw;
+  height: 100vh;
+  background-size: 110%;
+  background-position: bottom -1vh center;
+}
+
 button {
   border: 1px solid #000000;
   padding: 0.25rem 0.5rem;

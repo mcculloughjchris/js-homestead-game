@@ -5,7 +5,7 @@ const TitleScreen = () => {
   const navigate = useNavigate()
 
   return (
-    <div>
+    <div className="title-screen">
       <button onClick={() => navigate('/new-game')}>New Game</button>
       <button onClick={() => navigate('/load-game')}>Load Game</button>
       <button>Settings</button>

@@ -1,4 +1,4 @@
-interface Response {
+export interface Response {
   text: string
   goto?: string
 }
@@ -30,7 +30,7 @@ const characters: Characters = {
         responses: [
           {
             text: "Sure, come on in",
-            goto: "joline_introduction_yes"
+            goto: "joline_introduction_thanks"
           },
           {
             text: "Sorry, I can't help you out right now.",

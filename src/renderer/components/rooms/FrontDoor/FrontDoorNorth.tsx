@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { RenderedRoomProps } from "../../Room"
-import { Conversation } from "../../../../static/characterData"
+import { Conversation, Response } from "../../../../static/characterData"
 
 const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
   const [ conversationData, setConversationData ] = useState<Conversation | null>(null)
@@ -21,6 +21,18 @@ const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
     startConversation()
   }
 
+  const handleResponseButtonClick = async (r: Response) => {
+    const result = await window.electron.ipcRenderer.invoke('convo-respond', r, conversationData?.id, game)
+
+    if (result) {
+      setConversationData(result)
+    }
+  }
+
+  const handleContinueButtonClick = () => {
+    setConversationData(null)
+  }
+
   if (conversationData !== null) {
     return (
       <div className="convo">
@@ -28,9 +40,14 @@ const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
         <div className="convo-responses">
           {conversationData.responses?.map(r => {
             return (
-              <button>{r.text}</button>
+              <button
+                onClick={handleResponseButtonClick.bind(this, r)}
+              >{r.text}</button>
             )
           })}
+          {conversationData.responses?.length === 0 || conversationData.responses === null || conversationData.responses === undefined ? (
+            <button onClick={handleContinueButtonClick}>Continue</button>
+          ) : null}
         </div>
       </div>
     )

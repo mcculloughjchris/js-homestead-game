@@ -198,12 +198,11 @@ ipcMain.handle('trigger-door-knock', (_e, gameData) => {
   const availableCharacters = gameData.characterPositions.filter(c => c.position === null)
   const chosenCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
 
-  console.log(gameData)
-
   gameData.characterPositions = gameData.characterPositions.map((c: any) => ({
     ...c,
     position: chosenCharacter.name == c.name ? 'front-door' : c.position
   }))
+  gameData.currentDoor = chosenCharacter.name
 
   mainWindow?.webContents.send('door-knock', gameData)
 })
@@ -217,6 +216,23 @@ ipcMain.handle('convo-start', (_e, characterName, game) => {
   const introConvo = `${character.name.toLowerCase()}_introduction`
   if (game.completedConvos.indexOf(introConvo) === -1) {
     return character.conversations?.find(c => c.id === introConvo)
+  }
+})
+
+ipcMain.handle('convo-respond', (_e, response, id, game) => {
+  const character = characters[game.currentDoor]
+  if (!character) return
+
+  const convo = character.conversations?.find(c => c.id === response.goto)
+
+  if (convo) {
+    game.completedConvos = [
+      ...game.completedConvos,
+      id
+    ]
+    mainWindow?.webContents.send('update-game-data', game)
+
+    return convo
   }
 })
 

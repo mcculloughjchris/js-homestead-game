@@ -24,9 +24,14 @@ export const GameProvider = () => {
     setGame(e.detail.data)
   }
 
+  const handleElectronUpdateGameData = (data) => {
+    setGame(data)
+  }
+
   useEffect(() => {
     window.addEventListener('saved', handleGameDidSave)
     window.addEventListener('update-game-data', handleUpdateGameData)
+    window.electron.ipcRenderer.on('update-game-data', handleElectronUpdateGameData)
 
     return () => {
       window.removeEventListener('saved', handleGameDidSave)
@@ -37,8 +42,6 @@ export const GameProvider = () => {
   useEffect(() => {
     const { pathname } = location
     const [ id, room, direction ] = pathname.split("/").filter(s => s !== "")
-
-    console.log(room, direction)
 
     setGame({
       ...game,
