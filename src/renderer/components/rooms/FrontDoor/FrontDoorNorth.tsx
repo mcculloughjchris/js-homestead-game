@@ -29,7 +29,18 @@ const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
     }
   }
 
-  const handleContinueButtonClick = () => {
+  const handleContinueButtonClick = async () => {
+    const result = await window.electron.ipcRenderer.invoke('convo-end', conversationData?.id, game)
+
+    if (result) {
+      // const ev = new CustomEvent('update-game-data', {
+      //   detail: {
+      //     data: result
+      //   }
+      // })
+      // window.dispatchEvent(ev)
+    }
+
     setConversationData(null)
   }
 
@@ -62,9 +73,7 @@ const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
   }
 
   return (
-    <div>
-      Nobody at the door
-    </div>
+    <div className="screen front-door-north"></div>
   )
 }
 

@@ -219,6 +219,7 @@ ipcMain.handle('convo-start', (_e, characterName, game) => {
   }
 })
 
+// Respond to a conversation
 ipcMain.handle('convo-respond', (_e, response, id, game) => {
   const character = characters[game.currentDoor]
   if (!character) return
@@ -235,6 +236,55 @@ ipcMain.handle('convo-respond', (_e, response, id, game) => {
     return convo
   }
 })
+
+// End a convo
+ipcMain.handle('convo-end', (_e, id, game) => {
+  const character = characters[game.currentDoor]
+  if (!character) return
+
+  const convo = character.conversations?.find(c => c.id === id)
+
+  if (convo?.afterContinue) {
+    const [ method, a ] = convo.afterContinue.split('(')
+    const args: string[] = a.replace(')', '').split('\'').filter(f => f !== "")
+
+    switch (method) {
+      case 'pickSleepingSpace':
+        // @ts-ignore
+        return pickSleepingSpace(game, ...args)
+        break;
+      case 'leaveDoor':
+        return leaveDoor(game, ...args)
+    }
+  }
+})
+
+const pickSleepingSpace = (game: any, who: string) => {
+  mainWindow?.webContents.send('redirect', `/${game.id}/set-character-position/${who}`)
+}
+
+const leaveDoor = (game: any, who: string) => {
+  const response = {
+    ...game
+  }
+  response.currentDoor = undefined
+  response.characterPositions = game.characterPositions.map(c => {
+    if (c.id === who) {
+      return {
+        ...c,
+        position: null
+      }
+    }
+
+    return {
+      ...c,
+      position: null
+    }
+  })
+  console.log(response)
+  mainWindow?.webContents.send('update-game-data', response)
+  return response
+}
 
 ipcMain.handle('quit', () => {
   app.quit()

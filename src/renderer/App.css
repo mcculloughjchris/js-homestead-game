@@ -130,3 +130,17 @@ button {
 .pause-menu.paused {
   display: flex;
 }
+
+.screen {
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+}
+
+.front-door-north {
+  background-image: url('../../assets/screens/FrontDoorNorth.jpg');
+}
+
+.lroom0-west {
+  background-image: url('../../assets/screens/LRoom0West.jpg');
+}

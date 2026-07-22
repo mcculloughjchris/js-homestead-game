@@ -8,6 +8,7 @@ export interface Conversation {
   text: string
   starter: boolean
   responses?: Response[]
+  afterContinue?: string
 }
 
 export interface Character {
@@ -42,11 +43,13 @@ const characters: Characters = {
         id: "joline_introduction_thanks",
         text: "Thanks! You're a life saver!",
         starter: false,
+        afterContinue: "pickSleepingSpace('Joline')"
       },
       {
         id: "joline_introduction_no",
         text: "Thank you anyways.",
         starter: false,
+        afterContinue: "leaveDoor('Joline')"
       }
     ]
   }

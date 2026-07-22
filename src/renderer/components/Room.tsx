@@ -45,8 +45,6 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
   }, [ location ])
 
   useEffect(() => {
-    console.log('game data changed', game)
-
     const handleKeyPress = async ({ key }) => {
       if (key === "escape") {
         console.log('escape')
@@ -123,7 +121,6 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
 
   return (
     <div>
-      {game.currentLocation}, {game.currentDirection}
       {renderImage()}
       <Overlay
         currentDirection={facing}

@@ -9,6 +9,7 @@ import { roomValues } from '../static/mapData';
 import LoadGameScreen from './components/LoadGameScreen';
 
 import "./App.css"
+import SetCharacterPosition from './components/SetCharacterPosition';
 
 const paths = {
   intro: {
@@ -55,6 +56,7 @@ export default function App() {
               </Route>
             )
           })}
+          <Route path="set-character-position/:character" element={<SetCharacterPosition />} />
         </Route>
       </Routes>
     </Router>

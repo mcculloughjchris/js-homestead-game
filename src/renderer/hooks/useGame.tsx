@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect } from "react"
-import { useParams, Outlet, useLocation } from "react-router-dom"
+import { useParams, Outlet, useLocation, useNavigate } from "react-router-dom"
 import useLoadGame from "./useLoadGame"
 
 interface GameContextValue {
@@ -15,6 +15,7 @@ export const GameProvider = () => {
   const { game, loading, setGame } = useLoadGame(id)
 
   const location = useLocation()
+  const navigate = useNavigate()
 
   const handleGameDidSave = (e) => {
     setGame(e.detail.data)
@@ -28,10 +29,15 @@ export const GameProvider = () => {
     setGame(data)
   }
 
+  const handleElectronRedirect = (location) => {
+    navigate(location)
+  }
+
   useEffect(() => {
     window.addEventListener('saved', handleGameDidSave)
     window.addEventListener('update-game-data', handleUpdateGameData)
     window.electron.ipcRenderer.on('update-game-data', handleElectronUpdateGameData)
+    window.electron.ipcRenderer.on('redirect', handleElectronRedirect)
 
     return () => {
       window.removeEventListener('saved', handleGameDidSave)
