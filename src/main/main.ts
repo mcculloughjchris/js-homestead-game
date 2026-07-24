@@ -35,7 +35,8 @@ let mainWindow: BrowserWindow | null = null;
 const newGameData = (name: string) => {
   const characterPositions = () => Object.values(characters).map((c: Character) => ({
     name: c.name,
-    position: null
+    path: null,
+    direction: null
   }))
 
   return {
@@ -195,7 +196,7 @@ ipcMain.handle('keypress', async (e, data) => {
 
 // Trigger a door knock
 ipcMain.handle('trigger-door-knock', (_e, gameData) => {
-  const availableCharacters = gameData.characterPositions.filter(c => c.position === null)
+  const availableCharacters = gameData.characterPositions.filter(c => c.path === null)
   const chosenCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
 
   gameData.characterPositions = gameData.characterPositions.map((c: any) => ({
@@ -257,6 +258,26 @@ ipcMain.handle('convo-end', (_e, id, game) => {
         return leaveDoor(game, ...args)
     }
   }
+})
+
+ipcMain.handle('set-character-position', (_e, game, character, campable) => {
+  const result = { ...game }
+  result.characterPositions.map(char => {
+    if (char.name === character) {
+      return {
+        ...char,
+        path: campable.path,
+        direction: campable.direction
+      }
+    }
+
+    return char
+  })
+
+  mainWindow?.webContents.send('update-game-data', result)
+  mainWindow?.webContents.send('character-position-set')
+
+  return result
 })
 
 const pickSleepingSpace = (game: any, who: string) => {

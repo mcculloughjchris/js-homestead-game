@@ -243,6 +243,19 @@ export const roomValues: RoomValues = {
   }
 }
 
+export const campableRooms = [
+  {
+    name: "Couch",
+    path: "lroom4",
+    direction: "n"
+  },
+  {
+    name: "Desk",
+    path: "lroom5",
+    direction: "s"
+  }
+]
+
 export const gameMap = [
   [roomValues.lroom0, roomValues.lroom1, roomValues.frontDoor, roomValues.bedroom, roomValues.bathroom],
   [roomValues.lroom2, roomValues.lroom3, roomValues.kitchen0, roomValues.kitchen1, roomValues.kitchen2],

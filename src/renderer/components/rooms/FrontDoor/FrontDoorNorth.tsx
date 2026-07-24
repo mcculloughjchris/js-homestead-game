@@ -31,16 +31,6 @@ const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
 
   const handleContinueButtonClick = async () => {
     const result = await window.electron.ipcRenderer.invoke('convo-end', conversationData?.id, game)
-
-    if (result) {
-      // const ev = new CustomEvent('update-game-data', {
-      //   detail: {
-      //     data: result
-      //   }
-      // })
-      // window.dispatchEvent(ev)
-    }
-
     setConversationData(null)
   }
 
