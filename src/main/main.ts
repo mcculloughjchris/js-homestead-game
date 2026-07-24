@@ -201,7 +201,7 @@ ipcMain.handle('trigger-door-knock', (_e, gameData) => {
 
   gameData.characterPositions = gameData.characterPositions.map((c: any) => ({
     ...c,
-    position: chosenCharacter.name == c.name ? 'front-door' : c.position
+    path: chosenCharacter.name == c.name ? 'front-door' : c.position
   }))
   gameData.currentDoor = chosenCharacter.name
 
@@ -262,7 +262,7 @@ ipcMain.handle('convo-end', (_e, id, game) => {
 
 ipcMain.handle('set-character-position', (_e, game, character, campable) => {
   const result = { ...game }
-  result.characterPositions.map(char => {
+  result.characterPositions = result.characterPositions.map(char => {
     if (char.name === character) {
       return {
         ...char,
@@ -273,6 +273,7 @@ ipcMain.handle('set-character-position', (_e, game, character, campable) => {
 
     return char
   })
+  result.currentDoor = undefined
 
   mainWindow?.webContents.send('update-game-data', result)
   mainWindow?.webContents.send('character-position-set')
@@ -293,13 +294,13 @@ const leaveDoor = (game: any, who: string) => {
     if (c.id === who) {
       return {
         ...c,
-        position: null
+        path: null
       }
     }
 
     return {
       ...c,
-      position: null
+      path: null
     }
   })
   console.log(response)

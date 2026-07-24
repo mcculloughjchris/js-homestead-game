@@ -5,7 +5,10 @@ import { Conversation, Response } from "../../../../static/characterData"
 const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
   const [ conversationData, setConversationData ] = useState<Conversation | null>(null)
 
-  const currentlyAtDoor = game.characterPositions.find(c => c.position == 'front-door')
+
+  const currentlyAtDoor = game.characterPositions.find(c => c.path == 'front-door')
+
+  console.log(game)
 
   const startConversation = async () => {
     if (currentlyAtDoor !== undefined) {

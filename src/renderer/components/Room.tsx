@@ -1,8 +1,8 @@
-import { ElementType, useEffect, useState } from "react"
+import { ElementType, useEffect, useMemo, useState } from "react"
 import useGame from "../hooks/useGame"
 import { useLocation, useNavigate } from "react-router-dom"
 import Overlay from "./Overlay"
-import { RoomValue, roomValues } from "../../static/mapData"
+import { roomValues } from "../../static/mapData"
 import DebugOverlay from "../utils/DebugOverlay"
 import Toasts from "./Toasts"
 import PauseMenu from "./PauseMenu"
@@ -22,7 +22,11 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [ room, setRoom ] = useState<RoomValue>()
+  const room = useMemo(() => {
+    const [ _id, roomName ] = location.pathname.split("/").filter(x => x !== "")
+    return Object.values(roomValues).find(x => x.path == roomName)
+  }, [ location ])
+
   const [ escapeKeyDown, setEscapeKeyDown ] = useState<boolean>(false)
   const [ paused, setPaused ] = useState<boolean>(false)
 
@@ -38,11 +42,6 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
 
     window.electron.ipcRenderer.on('door-knock', handleDoorKnock)
   }, [])
-
-  useEffect(() => {
-    const [ _id, roomName, direction ] = location.pathname.split("/").filter(x => x !== "")
-    setRoom(Object.values(roomValues).find(x => x.path == roomName))
-  }, [ location ])
 
   useEffect(() => {
     const handleKeyPress = async ({ key }) => {
