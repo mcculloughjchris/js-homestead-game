@@ -23,7 +23,6 @@ const SetCharacterPosition = () => {
       <p>Where to put {character}?</p>
       {campableRooms.map(campable => {
         const roomIsTaken = game.characterPositions.find(charPos => charPos.path === campable.path && charPos.direction === campable.direction) !== undefined
-        console.log(roomIsTaken)
 
         if (!roomIsTaken) {
           return (

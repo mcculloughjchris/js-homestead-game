@@ -201,7 +201,8 @@ ipcMain.handle('trigger-door-knock', (_e, gameData) => {
 
   gameData.characterPositions = gameData.characterPositions.map((c: any) => ({
     ...c,
-    path: chosenCharacter.name == c.name ? 'front-door' : c.position
+    path: chosenCharacter.name === c.name ? 'front-door' : c.path,
+    direction: chosenCharacter.name === c.name ? 'n' : c.direction
   }))
   gameData.currentDoor = chosenCharacter.name
 
@@ -291,19 +292,16 @@ const leaveDoor = (game: any, who: string) => {
   }
   response.currentDoor = undefined
   response.characterPositions = game.characterPositions.map(c => {
-    if (c.id === who) {
+    if (c.name === who) {
       return {
         ...c,
-        path: null
+        path: null,
+        direction: null
       }
     }
 
-    return {
-      ...c,
-      path: null
-    }
+    return c
   })
-  console.log(response)
   mainWindow?.webContents.send('update-game-data', response)
   return response
 }

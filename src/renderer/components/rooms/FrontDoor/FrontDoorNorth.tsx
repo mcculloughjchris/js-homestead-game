@@ -1,64 +1,16 @@
-import { useEffect, useState } from "react"
 import { RenderedRoomProps } from "../../Room"
-import { Conversation, Response } from "../../../../static/characterData"
+import CharacterConversation from "../../CharacterConversation"
 
 const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
-  const [ conversationData, setConversationData ] = useState<Conversation | null>(null)
-
-  const currentlyAtDoor = game.characterPositions.find(c => c.path == 'front-door')
-
-  const startConversation = async () => {
-    if (currentlyAtDoor !== undefined) {
-      const result = await window.electron.ipcRenderer.invoke('convo-start', currentlyAtDoor.name, game)
-
-      if (result) {
-        setConversationData(result)
-      }
-    }
-  }
-
-  const handleAnswerDoorClick = () => {
-    startConversation()
-  }
-
-  const handleResponseButtonClick = async (r: Response) => {
-    const result = await window.electron.ipcRenderer.invoke('convo-respond', r, conversationData?.id, game)
-
-    if (result) {
-      setConversationData(result)
-    }
-  }
-
-  const handleContinueButtonClick = async () => {
-    const result = await window.electron.ipcRenderer.invoke('convo-end', conversationData?.id, game)
-    setConversationData(null)
-  }
-
-  if (conversationData !== null) {
-    return (
-      <div className="convo">
-        <div className="convo-prompt">{conversationData.text}</div>
-        <div className="convo-responses">
-          {conversationData.responses?.map(r => {
-            return (
-              <button
-                onClick={handleResponseButtonClick.bind(this, r)}
-              >{r.text}</button>
-            )
-          })}
-          {conversationData.responses?.length === 0 || conversationData.responses === null || conversationData.responses === undefined ? (
-            <button onClick={handleContinueButtonClick}>Continue</button>
-          ) : null}
-        </div>
-      </div>
-    )
-  }
+  const currentlyAtDoor = game.characterPositions.find(c => c.path === "front-door" && c.direction === "n")
 
   if (currentlyAtDoor !== undefined) {
     return (
-      <div>
-        <button onClick={handleAnswerDoorClick}>Answer door</button>
-      </div>
+      <CharacterConversation
+        game={game}
+        characterName={currentlyAtDoor.name}
+        triggerLabel="Answer door"
+      />
     )
   }
 

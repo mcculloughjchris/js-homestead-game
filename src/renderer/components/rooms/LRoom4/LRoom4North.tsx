@@ -1,4 +1,5 @@
 import { RenderedRoomProps } from "../../Room"
+import CharacterConversation from "../../CharacterConversation"
 
 const LRoom4North = ({ game }: RenderedRoomProps) => {
   const characterInRoom = game.characterPositions.find(c => c.path === "lroom4" && c.direction === "n")
@@ -6,7 +7,10 @@ const LRoom4North = ({ game }: RenderedRoomProps) => {
   return (
     <div>
       {characterInRoom !== undefined ? (
-        <p>{characterInRoom.name} in this room</p>
+        <CharacterConversation
+          game={game}
+          characterName={characterInRoom.name}
+        />
       ) : null}
       <p>couch here</p>
     </div>
