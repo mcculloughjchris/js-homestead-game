@@ -1,3 +1,4 @@
+import Calendar from "../../Calendar"
 import { RenderedRoomProps } from "../../Room"
 
 const LRoom0North = ({ game }: RenderedRoomProps) => {
@@ -24,6 +25,7 @@ const LRoom0North = ({ game }: RenderedRoomProps) => {
     <div>
       <div className="door">
         <button onClick={handleSaveGame}>save game</button>
+        <Calendar game={game}  />
       </div>
     </div>
   )

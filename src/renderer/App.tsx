@@ -10,6 +10,7 @@ import LoadGameScreen from './components/LoadGameScreen';
 
 import "./App.css"
 import SetCharacterPosition from './components/SetCharacterPosition';
+import Sleeping from './components/Sleeping';
 
 const paths = {
   intro: {
@@ -57,6 +58,7 @@ export default function App() {
             )
           })}
           <Route path="set-character-position/:character" element={<SetCharacterPosition />} />
+          <Route path="sleeping" element={<Sleeping />} />
         </Route>
       </Routes>
     </Router>

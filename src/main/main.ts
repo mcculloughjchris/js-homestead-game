@@ -306,6 +306,11 @@ const leaveDoor = (game: any, who: string) => {
   return response
 }
 
+ipcMain.handle('sleep', (_e, data) => {
+  data.days.push([])
+  mainWindow?.webContents.send('update-game-data', data)
+})
+
 ipcMain.handle('quit', () => {
   app.quit()
 })

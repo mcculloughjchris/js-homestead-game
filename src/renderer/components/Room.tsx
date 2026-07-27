@@ -45,10 +45,6 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
 
   useEffect(() => {
     const handleKeyPress = async ({ key }) => {
-      if (key === "escape") {
-        console.log('escape')
-      }
-
       const result = await window.electron.ipcRenderer.invoke("keypress", {
         key,
         game

@@ -13,6 +13,7 @@ export interface Conversation {
 
 export interface Character {
   name: string
+  class: "traveler" | "neighbor" | "government" | "needy" | "media"
   conversations?: Conversation[]
 }
 
@@ -23,6 +24,7 @@ interface Characters {
 const characters: Characters = {
   'Joline': {
     name: 'Joline',
+    class: "traveler",
     conversations: [
       {
         id: "joline_introduction",
@@ -50,6 +52,40 @@ const characters: Characters = {
         text: "Thank you anyways.",
         starter: false,
         afterContinue: "leaveDoor('Joline')"
+      }
+    ]
+  },
+  'Beekeeper': {
+    name: 'Beekeeper',
+    class: "neighbor",
+    conversations: [
+      {
+        id: 'beekeeper_introduction',
+        text: "Hello there! I live a few doors down and wanted to introduce myself!",
+        starter: true,
+        responses: [
+          {
+            text: "Ok, your name is?",
+            goto: "beekeeper_introduction_2"
+          }
+        ]
+      },
+      {
+        id: 'beekeeper_introduction_2',
+        text: "I'm a beekeeper, and I'm always ready to trade honey and beeswax!",
+        starter: false,
+        responses: [
+          {
+            text: "Cool, but you didn't give me your name?",
+            goto: "beekeeper_introduction_3"
+          }
+        ]
+      },
+      {
+        id: 'bekeeper_introduction_3',
+        text: "Haha! I'll catch you around ok?",
+        starter: false,
+        afterContinue: "leaveDoor('Beekeeper')"
       }
     ]
   }

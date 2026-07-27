@@ -144,3 +144,33 @@ button {
 .lroom0-west {
   background-image: url('../../assets/screens/LRoom0West.jpg');
 }
+
+.calendar {
+  width: 352px;
+  border: 1px solid #000000;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-meta {
+  text-align: center;
+  padding: 0.25rem;
+}
+
+.calendar .week {
+  border-top: 1px solid #000000;
+  display: flex;
+  flex-direction: row;
+}
+
+.calendar .week .day {
+  border-right: 1px solid #000000;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  padding: 0.25rem 0;
+}
+
+.calendar .week-days .day {
+  height: 25px;
+}

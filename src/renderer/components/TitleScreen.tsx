@@ -9,7 +9,7 @@ const TitleScreen = () => {
       <button onClick={() => navigate('/new-game')}>New Game</button>
       <button onClick={() => navigate('/load-game')}>Load Game</button>
       <button>Settings</button>
-      <button>Exit</button>
+      <button onClick={() => window.electron.ipcRenderer.invoke('quit')}>Exit</button>
     </div>
   )
 }
