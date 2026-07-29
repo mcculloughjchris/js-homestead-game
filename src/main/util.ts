@@ -52,7 +52,11 @@ export const oneSpaceForward = (currentLocation: string, currentDirection: NEWS)
   if (currentDirection == "e") currentIndex[1] += 1
   if (currentDirection == "w") currentIndex[1] -= 1
 
-  return gameMap[currentIndex[0]][currentIndex[1]].path
+  if (gameMap[currentIndex[0]] === undefined) return null
+
+  const result = gameMap[currentIndex[0]][currentIndex[1]].path
+
+  return result
 }
 
 export const oneSpaceBackward = (currentLocation: string, currentDirection: NEWS) => {
@@ -62,6 +66,8 @@ export const oneSpaceBackward = (currentLocation: string, currentDirection: NEWS
   if (currentDirection == "s") currentIndex[0] -= 1
   if (currentDirection == "e") currentIndex[1] -= 1
   if (currentDirection == "w") currentIndex[1] += 1
+
+  if (gameMap[currentIndex[0]] === undefined) return null
 
   return gameMap[currentIndex[0]][currentIndex[1]].path
 }
