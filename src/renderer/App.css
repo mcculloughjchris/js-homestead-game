@@ -182,3 +182,21 @@ button {
   background-color: #ffe58a;
   font-weight: bold;
 }
+
+.garden {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.garden-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.garden-bed {
+  width: 125px;
+  height: 125px;
+  border: 1px solid black;
+}

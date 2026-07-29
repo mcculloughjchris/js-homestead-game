@@ -22,8 +22,8 @@ interface Characters {
 }
 
 const characters: Characters = {
-  'Joline': {
-    name: 'Joline',
+  'Backpacker': {
+    name: 'Backpacker',
     class: "traveler",
     conversations: [
       {
@@ -54,6 +54,18 @@ const characters: Characters = {
         afterContinue: "leaveDoor('Joline')"
       }
     ]
+  },
+  'Nurse': {
+    name: 'Nurse',
+    class: 'traveler',
+  },
+  'Musician': {
+    name: 'Musician',
+    class: 'traveler'
+  },
+  'Collector': {
+    name: 'Collector',
+    class: 'traveler'
   },
   'Beekeeper': {
     name: 'Beekeeper',
@@ -88,6 +100,66 @@ const characters: Characters = {
         afterContinue: "leaveDoor('Beekeeper')"
       }
     ]
+  },
+  'Widow': {
+    name: 'Widow',
+    class: "neighbor"
+  },
+  'Veteran': {
+    name: 'Veteran',
+    class: 'neighbor'
+  },
+  'Teacher': {
+    name: 'Teacher',
+    class: 'neighbor'
+  },
+  'Mechanic': {
+    name: 'Mechanic',
+    class: 'neighbor'
+  },
+  'Census': {
+    name: 'Census',
+    class: 'government'
+  },
+  'Officer': {
+    name: 'Officer',
+    class: 'government'
+  },
+  'Utility': {
+    name: 'Utility',
+    class: 'government'
+  },
+  'Hungry': {
+    name: 'Hungry',
+    class: 'needy'
+  },
+  'Injured': {
+    name: 'Injured',
+    class: 'needy'
+  },
+  'Child': {
+    name: 'Child',
+    class: 'needy'
+  },
+  'Pregnant': {
+    name: 'Pregnant',
+    class: 'needy'
+  },
+  'Elderly': {
+    name: 'Elderly',
+    class: 'needy'
+  },
+  'Journalist': {
+    name: 'Journalist',
+    class: 'media'
+  },
+  'Youtuber': {
+    name: 'Youtuber',
+    class: 'media'
+  },
+  'Reporter': {
+    name: 'Reporter',
+    class: 'media'
   }
 }
 

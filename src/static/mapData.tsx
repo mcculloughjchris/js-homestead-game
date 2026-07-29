@@ -24,6 +24,7 @@ import LRoom5East from "../renderer/components/rooms/LRoom5/LRoom5East"
 import LRoom5North from "../renderer/components/rooms/LRoom5/LRoom5North"
 import LRoom5South from "../renderer/components/rooms/LRoom5/LRoom5South"
 import LRoom5West from "../renderer/components/rooms/LRoom5/LRoom5West"
+import Porch2South from "../renderer/components/rooms/Porch2/Porch2South"
 
 export type Direction = "n" | "s" | "e" | "w"
 
@@ -216,7 +217,7 @@ export const roomValues: RoomValues = {
     path: "porch2",
     images: {
       n: "",
-      s: "",
+      s: Porch2South,
       e: "",
       w: ""
     },
