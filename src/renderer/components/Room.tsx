@@ -28,6 +28,7 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
   }, [ location ])
 
   const [ escapeKeyDown, setEscapeKeyDown ] = useState<boolean>(false)
+  const [ tabKeyDown, setTabKeyDown ] = useState<boolean>(false)
   const [ paused, setPaused ] = useState<boolean>(false)
 
   useEffect(() => {
@@ -70,6 +71,10 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
         if (escapeKeyDown === false) {
           setEscapeKeyDown(true)
         }
+      }
+
+      if (key.toLowerCase() === 'tab') {
+        navigate(`/${game.id}/inventory`)
       }
     }
 

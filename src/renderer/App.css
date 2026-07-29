@@ -199,4 +199,50 @@ button {
   width: 125px;
   height: 125px;
   border: 1px solid black;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.garden-bed-empty {
+  cursor: pointer;
+}
+
+.garden-bed-growing,
+.garden-bed-ready {
+  cursor: pointer;
+}
+
+.garden-bed-growing {
+  filter: grayscale(0.8) brightness(0.85);
+}
+
+.garden-bed-ready {
+  outline: 3px solid gold;
+  outline-offset: -3px;
+}
+
+.garden-bed-label {
+  background-color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  padding: 0.1rem 0.25rem;
+  text-align: center;
+}
+
+/*.garden-bed.plant-lettuce { background-image: url('../../assets/plants/lettuce.png'); }
+.garden-bed.plant-peas { background-image: url('../../assets/plants/peas.png'); }
+.garden-bed.plant-cucumber { background-image: url('../../assets/plants/cucumber.png'); }
+.garden-bed.plant-tomato { background-image: url('../../assets/plants/tomato.png'); }
+.garden-bed.plant-carrot { background-image: url('../../assets/plants/carrot.png'); }
+.garden-bed.plant-asparagus { background-image: url('../../assets/plants/asparagus.png'); }
+.garden-bed.plant-strawberry { background-image: url('../../assets/plants/strawberry.png'); }*/
+
+.seed-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: center;
 }

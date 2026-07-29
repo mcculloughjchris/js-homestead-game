@@ -19,6 +19,7 @@ import { randomUUID } from 'crypto';
 import { roomValues } from '../static/mapData';
 import playerActions from '../static/playerActions';
 import characters, { Character } from '../static/characterData';
+import plantTypes from '../static/plantTypes';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -52,9 +53,13 @@ const newGameData = (name: string) => {
     currentDirection: "s",
     currentDoor: null,
     characterPositions: characterPositions(),
-    completedConvos: []
+    completedConvos: [],
+    garden: Array.from({ length: 16 }, () => null),
+    inventory: {}
   }
 }
+
+const randomBetween = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
 
 // Trigger a new game
 ipcMain.handle('trigger-new-game', async (e, name) => {
@@ -309,6 +314,48 @@ const leaveDoor = (game: any, who: string) => {
 ipcMain.handle('sleep', (_e, data) => {
   data.days.push([])
   mainWindow?.webContents.send('update-game-data', data)
+})
+
+// Plant a seed in an empty garden bed
+ipcMain.handle('plant-seed', (_e, game, bedIndex: number, plantId: string) => {
+  const plantType = plantTypes[plantId]
+  if (!plantType) return game
+  if (game.garden[bedIndex] !== null && game.garden[bedIndex] !== undefined) return game
+
+  const garden = [...game.garden]
+  garden[bedIndex] = {
+    plantId,
+    plantedOnDay: game.days.length - 1,
+    harvestAmount: randomBetween(plantType.minHarvest, plantType.maxHarvest)
+  }
+
+  return { ...game, garden }
+})
+
+// Harvest a fully-grown garden bed
+ipcMain.handle('harvest-plant', (_e, game, bedIndex: number) => {
+  const bed = game.garden[bedIndex]
+  if (!bed) return null
+
+  const plantType = plantTypes[bed.plantId]
+  if (!plantType) return null
+
+  const currentDay = game.days.length - 1
+  const daysGrown = currentDay - bed.plantedOnDay
+
+  if (daysGrown < plantType.daysToGrow) return null
+
+  const garden = [...game.garden]
+  garden[bedIndex] = null
+
+  const inventory = { ...game.inventory }
+  inventory[bed.plantId] = (inventory[bed.plantId] || 0) + bed.harvestAmount
+
+  return {
+    game: { ...game, garden, inventory },
+    plantName: plantType.name,
+    amount: bed.harvestAmount
+  }
 })
 
 ipcMain.handle('quit', () => {
