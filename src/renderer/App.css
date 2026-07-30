@@ -1,5 +1,14 @@
 @import "the-new-css-reset/css/reset.css";
 
+.debug-table {
+  opacity: 0.25;
+  border: 1px solid #000000;
+
+  td {
+    padding: 0.25rem 1rem;
+  }
+}
+
 .title-screen {
   background-image: url('../../assets/screens/title-screen.jpg');
   width: 100vw;
@@ -137,14 +146,6 @@ button {
   background-size: cover;
 }
 
-.front-door-north {
-  background-image: url('../../assets/screens/FrontDoorNorth.jpg');
-}
-
-.lroom0-west {
-  background-image: url('../../assets/screens/LRoom0West.jpg');
-}
-
 .calendar {
   width: 352px;
   border: 1px solid #000000;
@@ -188,22 +189,25 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 }
 
 .garden-row {
   display: flex;
   flex-direction: row;
+  gap: 1rem;
 }
 
 .garden-bed {
   width: 125px;
   height: 125px;
-  border: 1px solid black;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  background-size: cover;
-  background-position: center;
+  background-image: url('../../assets/vegetals.jpg');
+  background-size: 40rem;
+  background-position: top -51px left -55px;
+  position: relative;
 }
 
 .garden-bed-empty {
@@ -231,6 +235,44 @@ button {
   text-align: center;
 }
 
+.garden-bed.plant-lettuce::after,
+.garden-bed.plant-peas::after,
+.garden-bed.plant-cucumber::after,
+.garden-bed.plant-tomato::after,
+.garden-bed.plant-carrot::after,
+.garden-bed.plant-asparagus::after,
+.garden-bed.plant-strawberry::after {
+  content: '';
+  display: block;
+  background-image: url('../../assets/vegetals.jpg');
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
+.garden-bed.plant-lettuce::after {
+  background-size: 34rem;
+  background-position: left 380px top -45px;
+}
+
+.garden-bed.plant-peas::after {
+  background-size: 34rem;
+  background-position: top -38px left -280px;
+}
+
+.garden-bed.plant-cucumber::after {
+  background-size: 34rem;
+  background-position: top -38px left -390px;
+}
+
+.garden-bed.plant-tomato::after {
+  background-size: 32rem;
+  background-position: top -152px left -58px;
+}
+
 /*.garden-bed.plant-lettuce { background-image: url('../../assets/plants/lettuce.png'); }
 .garden-bed.plant-peas { background-image: url('../../assets/plants/peas.png'); }
 .garden-bed.plant-cucumber { background-image: url('../../assets/plants/cucumber.png'); }
@@ -245,4 +287,20 @@ button {
   gap: 0.5rem;
   margin-top: 1rem;
   justify-content: center;
+}
+
+.front-door-north {
+  background-image: url('../../assets/screens/FrontDoorNorth.jpg');
+}
+
+.lroom0-west {
+  background-image: url('../../assets/screens/LRoom0West.jpg');
+}
+
+.lroom1-north {
+  background-image: url('../../assets/window.jpg');
+}
+
+.porch2-south {
+  background-image: url('../../assets/door.jpg');
 }

@@ -23,9 +23,18 @@ const DebugOverlay = ({ game }: DebugOverlayProps) => {
 
   if (active) {
     return (
-      <div className="debugger">
-        DEBUGGER
-      </div>
+      <table className="debug-table">
+        <tbody>
+          <tr>
+            <th>room</th>
+            <td>{game.currentLocation}</td>
+          </tr>
+          <tr>
+            <th>direction</th>
+            <td>{game.currentDirection}</td>
+          </tr>
+        </tbody>
+      </table>
     )
   }
 

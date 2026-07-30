@@ -6,7 +6,7 @@ const Porch2South = () => {
   const navigate = useNavigate()
 
   return (
-    <div>
+    <div className="screen porch2-south">
       <p>porch2 south</p>
       <button onClick={() => {
         navigate(`/${game.id}/garden`)
