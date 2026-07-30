@@ -46,6 +46,8 @@ Fascist state: The National Restoration Government
   - People in need of food (threaten, kill, help)
   - Government workers (threaten, kill)
   - Media workers (threaten, kill)
+- Harbor asylum-seekers
+  - Hide them when you think the next door-knock is an official
 
 ## TODO
 

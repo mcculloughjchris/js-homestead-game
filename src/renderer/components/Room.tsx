@@ -1,4 +1,4 @@
-import { ElementType, useEffect, useMemo, useState } from "react"
+import { ElementType, useMemo, useState } from "react"
 import useGame from "../hooks/useGame"
 import { useLocation, useNavigate } from "react-router-dom"
 import Overlay from "./Overlay"
@@ -7,6 +7,8 @@ import DebugOverlay from "../utils/DebugOverlay"
 import Toasts from "./Toasts"
 import PauseMenu from "./PauseMenu"
 import PlayerStats from "./PlayerStats"
+import useDoorKnock from "../hooks/useDoorKnock"
+import usePlayerInput from "../hooks/usePlayerInput"
 
 interface RoomProps {
   facing: "n" | "s" | "e" | "w"
@@ -19,86 +21,17 @@ export interface RenderedRoomProps {
 
 const Room = ({ facing, data = null, ...args }: RoomProps) => {
   const { game, loading, setGame } = useGame()
+  const [ tabKeyDown, setTabKeyDown ] = useState<boolean>(false)
 
+  const { paused } = usePlayerInput(game, setGame)
   const navigate = useNavigate()
   const location = useLocation()
+  useDoorKnock()
 
   const room = useMemo(() => {
     const [ _id, roomName ] = location.pathname.split("/").filter(x => x !== "")
     return Object.values(roomValues).find(x => x.path == roomName)
   }, [ location ])
-
-  const [ escapeKeyDown, setEscapeKeyDown ] = useState<boolean>(false)
-  const [ tabKeyDown, setTabKeyDown ] = useState<boolean>(false)
-  const [ paused, setPaused ] = useState<boolean>(false)
-
-  useEffect(() => {
-    const handleDoorKnock = async (data) => {
-      console.log(data)
-      const e = new CustomEvent('update-game-data', {
-        detail: {
-          data: data
-        }
-      })
-      window.dispatchEvent(e)
-    }
-
-    window.electron.ipcRenderer.on('door-knock', handleDoorKnock)
-  }, [])
-
-  useEffect(() => {
-    const handleKeyPress = async ({ key }) => {
-      const result = await window.electron.ipcRenderer.invoke("keypress", {
-        key,
-        game
-      })
-
-      if (result === undefined) return
-
-      if (result.hasOwnProperty('newLocation')) {
-        setGame(prevGame => ({
-          ...prevGame,
-          currentLocation: result.newLocation,
-          ...(result.hasOwnProperty('days') ? { days: result.days } : {})
-        }))
-        navigate(`/${game.id}/${result.newLocation}/${game.currentDirection}`)
-      } else if (result.hasOwnProperty('newDirection')) {
-        setGame(prevGame => ({ ...prevGame, currentDirection: result.newDirection }))
-        navigate(`/${game.id}/${game.currentLocation}/${result.newDirection}`)
-      }
-    }
-
-    const handleKeyDown = ({ key }) => {
-      if (key.toLowerCase() === 'escape') {
-        if (escapeKeyDown === false) {
-          setEscapeKeyDown(true)
-        }
-      }
-
-      if (key.toLowerCase() === 'tab') {
-        navigate(`/${game.id}/inventory`)
-      }
-    }
-
-    const handleKeyUp = ({ key }) => {
-      if (key.toLowerCase() === 'escape') {
-        if (escapeKeyDown === true) {
-          setEscapeKeyDown(false)
-          setPaused(!paused)
-        }
-      }
-    }
-
-    window.addEventListener('keypress', handleKeyPress)
-    window.addEventListener('keydown', handleKeyDown)
-    window.addEventListener('keyup', handleKeyUp)
-
-    return () => {
-      window.removeEventListener('keypress', handleKeyPress)
-      window.removeEventListener('keydown', handleKeyDown)
-      window.removeEventListener('keyup', handleKeyUp)
-    }
-  }, [ game, paused, escapeKeyDown ])
 
   if (loading) {
     return (

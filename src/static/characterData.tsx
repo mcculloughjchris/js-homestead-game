@@ -97,7 +97,7 @@ const characters: Characters = {
         ]
       },
       {
-        id: 'bekeeper_introduction_3',
+        id: 'beekeeper_introduction_3',
         text: "Haha! I'll catch you around ok?",
         starter: false,
         afterContinue: "leaveDoor('Beekeeper')"
