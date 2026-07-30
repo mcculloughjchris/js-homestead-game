@@ -10,7 +10,7 @@ export interface PlayerActions {
 const playerActions: PlayerActions = {
   'move': {
     id: 'move',
-    timeCost: 1
+    timeCost: 0.005
   }
 }
 

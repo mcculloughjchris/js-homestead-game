@@ -2,7 +2,7 @@ import { RenderedRoomProps } from "../../Room"
 
 const LRoom1West = ({ game }: RenderedRoomProps) => {
   return (
-    <div>
+    <div className="screen lroom1-west">
     </div>
   )
 }

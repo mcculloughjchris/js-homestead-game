@@ -108,6 +108,58 @@ button {
   color: white;
 }
 
+.player-stats {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 20vw;
+  opacity: 0.5;
+  transition: opacity 200ms ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.progress-bar {
+  width: 100%;
+  height: 30px;
+  border: 1px solid black;
+  position: relative;
+
+  .progress {
+    height: 100%;
+
+    &.health {
+      background: green;
+    }
+
+    &.stamina {
+      background: yellow;
+    }
+
+    &.hunger {
+      background: orange;
+    }
+
+    &.thirst {
+      background: blue;
+    }
+  }
+
+  .progress-label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .pause-menu {
   display: none;
   position: fixed;
@@ -299,6 +351,10 @@ button {
 
 .lroom1-north {
   background-image: url('../../assets/window.jpg');
+}
+
+.lroom1-west {
+  background-image: url('../../assets/screens/LRoom1West.jpg');
 }
 
 .porch2-south {

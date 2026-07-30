@@ -6,6 +6,7 @@ import { roomValues } from "../../static/mapData"
 import DebugOverlay from "../utils/DebugOverlay"
 import Toasts from "./Toasts"
 import PauseMenu from "./PauseMenu"
+import PlayerStats from "./PlayerStats"
 
 interface RoomProps {
   facing: "n" | "s" | "e" | "w"
@@ -127,13 +128,10 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
         currentLocation={game.currentLocation}
         days={game.days}
       />
-      <DebugOverlay
-        game={game}
-      />
+      <PlayerStats />
       <Toasts />
-      <PauseMenu
-        paused={paused}
-      />
+      <DebugOverlay game={game} />
+      <PauseMenu paused={paused} />
     </div>
   )
 }

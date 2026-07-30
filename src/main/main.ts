@@ -15,11 +15,11 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { leftOf, oneSpaceBackward, oneSpaceForward, oppositeOf, resolveHtmlPath, rightOf } from './util';
-import { randomUUID } from 'crypto';
 import { roomValues } from '../static/mapData';
 import playerActions from '../static/playerActions';
-import characters, { Character } from '../static/characterData';
+import characters from '../static/characterData';
 import plantTypes from '../static/plantTypes';
+import newGameData from './newGameData';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -32,32 +32,6 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-
-const newGameData = (name: string) => {
-  const characterPositions = () => Object.values(characters).map((c: Character) => ({
-    name: c.name,
-    path: null,
-    direction: null
-  }))
-
-  return {
-    id: randomUUID(),
-    name: name,
-    tutorialed: false,
-    hunger: 100,
-    thirst: 100,
-    money: 100,
-    days: [[]],
-    saves: 0,
-    currentLocation: "lroom0",
-    currentDirection: "s",
-    currentDoor: null,
-    characterPositions: characterPositions(),
-    completedConvos: [],
-    garden: Array.from({ length: 16 }, () => null),
-    inventory: {}
-  }
-}
 
 const randomBetween = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
 
