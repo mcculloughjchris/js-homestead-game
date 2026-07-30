@@ -28,3 +28,27 @@ Thoughts:
   - Thirst
   - Energy
   - Money
+
+## Story
+
+Player is a homesteader living under a recently-turned fascist state. Player is expected to continue homesteading while aiding a revolutionary group with supplies, hoarding leftist literature, and harboring fugitive asylum seekers.
+
+Revolutionary group: The Lantern
+
+Fascist state: The National Restoration Government
+
+## Gameplay
+
+- Grow, preserve, and store food
+- Answer door to people like:
+  - Asylum seekers (threaten, kill, invite in)
+  - Travelers offering things for trade (threaten, kill, trade)
+  - People in need of food (threaten, kill, help)
+  - Government workers (threaten, kill)
+  - Media workers (threaten, kill)
+
+## TODO
+
+- [ ] Draw scenes
+- [ ] Draw characters
+- [ ] Player stat reduction

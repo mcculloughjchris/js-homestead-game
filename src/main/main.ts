@@ -20,6 +20,7 @@ import playerActions from '../static/playerActions';
 import characters from '../static/characterData';
 import plantTypes from '../static/plantTypes';
 import newGameData from './newGameData';
+import { addDayAction, onDayActionAdded } from './dayActions';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -34,6 +35,14 @@ class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 const randomBetween = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min
+
+// Runs any time an action is appended to the current day (see dayActions.ts).
+// Add stat depletion/other side effects here as they're needed.
+onDayActionAdded((game, action, currentTime) => {
+  if (parseInt(currentTime) > 800) {
+    triggerDoorKnock(game)
+  }
+})
 
 // Trigger a new game
 ipcMain.handle('trigger-new-game', async (e, name) => {
@@ -122,12 +131,11 @@ ipcMain.handle('keypress', async (e, data) => {
     }
 
     if (newLocation !== null) {
-      const days = [...game.days]
-      days[days.length - 1] = [...days[days.length - 1], playerActions.move]
+      const updatedGame = addDayAction(game, playerActions.move)
 
       return {
         newLocation,
-        days
+        days: updatedGame.days
       }
     }
   }
@@ -146,12 +154,11 @@ ipcMain.handle('keypress', async (e, data) => {
     }
 
     if (newLocation !== null) {
-      const days = [...game.days]
-      days[days.length - 1] = [...days[days.length - 1], playerActions.move]
+      const updatedGame = addDayAction(game, playerActions.move)
 
       return {
         newLocation,
-        days
+        days: updatedGame.days
       }
     }
   }
@@ -173,10 +180,14 @@ ipcMain.handle('keypress', async (e, data) => {
   }
 })
 
-// Trigger a door knock
-ipcMain.handle('trigger-door-knock', (_e, gameData) => {
-  const availableCharacters = gameData.characterPositions.filter(c => c.path === null)
+const triggerDoorKnock = (gameData) => {
+  const availableCharacters = gameData.characterPositions.filter(c => {
+    return c.path === null && characters[c.name].conversations.length > 0
+  })
   const chosenCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
+  console.log(chosenCharacter)
+
+  if (chosenCharacter === undefined) return
 
   gameData.characterPositions = gameData.characterPositions.map((c: any) => ({
     ...c,
@@ -186,10 +197,16 @@ ipcMain.handle('trigger-door-knock', (_e, gameData) => {
   gameData.currentDoor = chosenCharacter.name
 
   mainWindow?.webContents.send('door-knock', gameData)
+}
+
+// Trigger a door knock
+ipcMain.handle('trigger-door-knock', (_e, gameData) => {
+  triggerDoorKnock(gameData)
 })
 
 // Start a conversation
 ipcMain.handle('convo-start', (_e, characterName, game) => {
+  console.log(characterName)
   const character = characters[characterName]
   if (!character) return
 

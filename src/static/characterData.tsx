@@ -27,45 +27,48 @@ const characters: Characters = {
     class: "traveler",
     conversations: [
       {
-        id: "joline_introduction",
+        id: "backpacker_introduction",
         text: "Hi, can I crash on your couch for a couple nights?",
         starter: true,
         responses: [
           {
             text: "Sure, come on in",
-            goto: "joline_introduction_thanks"
+            goto: "backpacker_introduction_thanks"
           },
           {
             text: "Sorry, I can't help you out right now.",
-            goto: "joline_introduction_no"
+            goto: "backpacker_introduction_no"
           }
         ]
       },
       {
-        id: "joline_introduction_thanks",
+        id: "backpacker_introduction_thanks",
         text: "Thanks! You're a life saver!",
         starter: false,
-        afterContinue: "pickSleepingSpace('Joline')"
+        afterContinue: "pickSleepingSpace('backpacker')"
       },
       {
-        id: "joline_introduction_no",
+        id: "backpacker_introduction_no",
         text: "Thank you anyways.",
         starter: false,
-        afterContinue: "leaveDoor('Joline')"
+        afterContinue: "leaveDoor('backpacker')"
       }
     ]
   },
   'Nurse': {
     name: 'Nurse',
     class: 'traveler',
+    conversations: []
   },
   'Musician': {
     name: 'Musician',
-    class: 'traveler'
+    class: 'traveler',
+    conversations: []
   },
   'Collector': {
     name: 'Collector',
-    class: 'traveler'
+    class: 'traveler',
+    conversations: []
   },
   'Beekeeper': {
     name: 'Beekeeper',
@@ -103,63 +106,78 @@ const characters: Characters = {
   },
   'Widow': {
     name: 'Widow',
-    class: "neighbor"
+    class: "neighbor",
+    conversations: []
   },
   'Veteran': {
     name: 'Veteran',
-    class: 'neighbor'
+    class: 'neighbor',
+    conversations: []
   },
   'Teacher': {
     name: 'Teacher',
-    class: 'neighbor'
+    class: 'neighbor',
+    conversations: []
   },
   'Mechanic': {
     name: 'Mechanic',
-    class: 'neighbor'
+    class: 'neighbor',
+    conversations: []
   },
   'Census': {
     name: 'Census',
-    class: 'government'
+    class: 'government',
+    conversations: []
   },
   'Officer': {
     name: 'Officer',
-    class: 'government'
+    class: 'government',
+    conversations: []
   },
   'Utility': {
     name: 'Utility',
-    class: 'government'
+    class: 'government',
+    conversations: []
   },
   'Hungry': {
     name: 'Hungry',
-    class: 'needy'
+    class: 'needy',
+    conversations: []
   },
   'Injured': {
     name: 'Injured',
-    class: 'needy'
+    class: 'needy',
+    conversations: []
   },
   'Child': {
     name: 'Child',
-    class: 'needy'
+    class: 'needy',
+    conversations: []
   },
   'Pregnant': {
     name: 'Pregnant',
-    class: 'needy'
+    class: 'needy',
+    conversations: []
   },
   'Elderly': {
     name: 'Elderly',
-    class: 'needy'
+    class: 'needy',
+    conversations: []
   },
   'Journalist': {
     name: 'Journalist',
-    class: 'media'
+    class: 'media',
+    conversations: []
   },
   'Youtuber': {
     name: 'Youtuber',
-    class: 'media'
+    class: 'media',
+    conversations: []
   },
   'Reporter': {
     name: 'Reporter',
-    class: 'media'
+    class: 'media',
+    conversations: []
   }
 }
 

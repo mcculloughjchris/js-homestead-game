@@ -8,6 +8,7 @@ interface CharacterConversationProps {
 }
 
 const CharacterConversation = ({ game, characterName, triggerLabel = "Talk" }: CharacterConversationProps) => {
+  console.log(characterName)
   const [ conversationData, setConversationData ] = useState<Conversation | null>(null)
 
   const startConversation = async () => {

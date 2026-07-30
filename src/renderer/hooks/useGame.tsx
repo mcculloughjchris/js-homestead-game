@@ -49,11 +49,11 @@ export const GameProvider = () => {
     const { pathname } = location
     const [ id, room, direction ] = pathname.split("/").filter(s => s !== "")
 
-    setGame({
-      ...game,
+    setGame(prevGame => ({
+      ...prevGame,
       currentLocation: room,
       currentDirection: direction
-    })
+    }))
   }, [ location ])
 
   return (

@@ -34,6 +34,7 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
 
   useEffect(() => {
     const handleDoorKnock = async (data) => {
+      console.log(data)
       const e = new CustomEvent('update-game-data', {
         detail: {
           data: data
@@ -55,14 +56,14 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
       if (result === undefined) return
 
       if (result.hasOwnProperty('newLocation')) {
-        setGame({
-          ...game,
+        setGame(prevGame => ({
+          ...prevGame,
           currentLocation: result.newLocation,
           ...(result.hasOwnProperty('days') ? { days: result.days } : {})
-        })
+        }))
         navigate(`/${game.id}/${result.newLocation}/${game.currentDirection}`)
       } else if (result.hasOwnProperty('newDirection')) {
-        setGame({ ...game, currentDirection: result.newDirection })
+        setGame(prevGame => ({ ...prevGame, currentDirection: result.newDirection }))
         navigate(`/${game.id}/${game.currentLocation}/${result.newDirection}`)
       }
     }
