@@ -48,6 +48,8 @@ Fascist state: The National Restoration Government
   - Media workers (threaten, kill)
 - Harbor asylum-seekers
   - Hide them when you think the next door-knock is an official
+  - If official notices the fugitive it's game over
+  - If you refuse to answer the door in time the official might bust you
 
 ## TODO
 

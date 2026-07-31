@@ -182,10 +182,14 @@ ipcMain.handle('keypress', async (e, data) => {
 
 const triggerDoorKnock = (gameData) => {
   const availableCharacters = gameData.characterPositions.filter(c => {
-    return c.path === null && characters[c.name].conversations.length > 0
+    const character = characters[c.name]
+    if (c.path !== null || character.conversations.length === 0) return false
+
+    const starterConvos = character.conversations.filter(convo => convo.starter)
+
+    return starterConvos.some(convo => gameData.completedConvos.indexOf(convo.id) === -1)
   })
   const chosenCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
-  console.log(chosenCharacter)
 
   if (chosenCharacter === undefined) return
 
@@ -206,7 +210,6 @@ ipcMain.handle('trigger-door-knock', (_e, gameData) => {
 
 // Start a conversation
 ipcMain.handle('convo-start', (_e, characterName, game) => {
-  console.log(characterName)
   const character = characters[characterName]
   if (!character) return
 
