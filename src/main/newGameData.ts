@@ -16,6 +16,7 @@ const newGameData = (name: string) => {
     hunger: 100,
     thirst: 100,
     stamina: 100,
+    bathroom: 0,
     money: 100,
     days: [[]],
     saves: 0,

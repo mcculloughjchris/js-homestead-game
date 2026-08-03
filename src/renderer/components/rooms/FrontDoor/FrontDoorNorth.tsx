@@ -4,7 +4,6 @@ import CharacterConversation from "../../CharacterConversation"
 const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
   // const currentlyAtDoor = game.characterPositions.find(c => c.path === "front-door" && c.direction === "n")
   const currentlyAtDoor = game.currentDoor
-  console.log(game)
 
   if (currentlyAtDoor !== undefined) {
     return (

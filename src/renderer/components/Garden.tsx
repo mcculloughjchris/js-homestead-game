@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import useGame from "../hooks/useGame"
 import plantTypes from "../../static/plantTypes"
 import Toasts from "./Toasts"
+import Clock from "./Clock"
 
 const GRID_ROWS = 4
 const GRID_COLS = 4
@@ -113,6 +114,7 @@ const Garden = () => {
       ) : null}
 
       <button onClick={handleBackButtonClick}>Back</button>
+      <Clock days={game.days} />
       <Toasts />
     </div>
   )

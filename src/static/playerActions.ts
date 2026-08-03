@@ -11,6 +11,14 @@ const playerActions: PlayerActions = {
   'move': {
     id: 'move',
     timeCost: 0.005
+  },
+  'plant': {
+    id: 'plant',
+    timeCost: 0.25
+  },
+  'respond': {
+    id: 'respond',
+    timeCost: 0.0075
   }
 }
 

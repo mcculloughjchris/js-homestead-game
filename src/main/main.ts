@@ -227,12 +227,14 @@ ipcMain.handle('convo-respond', (_e, response, id, game) => {
 
   const convo = character.conversations?.find(c => c.id === response.goto)
 
+  const gameResult = addDayAction(game, playerActions.respond)
+
   if (convo) {
-    game.completedConvos = [
-      ...game.completedConvos,
+    gameResult.completedConvos = [
+      ...gameResult.completedConvos,
       id
     ]
-    mainWindow?.webContents.send('update-game-data', game)
+    mainWindow?.webContents.send('update-game-data', gameResult)
 
     return convo
   }
@@ -323,7 +325,9 @@ ipcMain.handle('plant-seed', (_e, game, bedIndex: number, plantId: string) => {
     harvestAmount: randomBetween(plantType.minHarvest, plantType.maxHarvest)
   }
 
-  return { ...game, garden }
+  const gameResult = addDayAction(game, playerActions.plant)
+
+  return { ...gameResult, garden }
 })
 
 // Harvest a fully-grown garden bed

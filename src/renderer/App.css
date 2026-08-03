@@ -325,6 +325,21 @@ button {
   background-position: top -152px left -58px;
 }
 
+.garden-bed.plant-carrot::after {
+  background-size: 25rem;
+  background-position: top -90px left -141px;
+}
+
+.garden-bed.plant-asparagus::after {
+  background-size: 38rem;
+  background-position: top -160px left -383px;
+}
+
+.garden-bed.plant-strawberry::after {
+  background-size: 40rem;
+  background-position: top -316px left -68px;
+}
+
 /*.garden-bed.plant-lettuce { background-image: url('../../assets/plants/lettuce.png'); }
 .garden-bed.plant-peas { background-image: url('../../assets/plants/peas.png'); }
 .garden-bed.plant-cucumber { background-image: url('../../assets/plants/cucumber.png'); }
