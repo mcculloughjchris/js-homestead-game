@@ -17,6 +17,10 @@ const PlayerStats = () => {
         <div className="progress thirst"></div>
         <div className="progress-label">Thirst</div>
       </div>
+      <div className="progress-bar">
+        <div className="progress bathroom"></div>
+        <div className="progress-label">Bathroom</div>
+      </div>
     </div>
   )
 }
