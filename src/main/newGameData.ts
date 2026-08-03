@@ -26,7 +26,8 @@ const newGameData = (name: string) => {
     characterPositions: characterPositions(),
     completedConvos: [],
     garden: Array.from({ length: 16 }, () => null),
-    inventory: {}
+    inventory: {},
+    gameEnded: false
   }
 }
 

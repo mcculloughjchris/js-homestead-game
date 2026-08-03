@@ -1,26 +1,31 @@
-const PlayerStats = () => {
+interface PlayerStatsProps {
+  game: any
+}
+
+const STATS = [
+  { key: "health", label: "Health" },
+  { key: "stamina", label: "Stamina" },
+  { key: "hunger", label: "Hunger" },
+  { key: "thirst", label: "Thirst" },
+  { key: "bathroom", label: "Bathroom" }
+]
+
+const PlayerStats = ({ game }: PlayerStatsProps) => {
   return (
     <div className="player-stats">
-      <div className="progress-bar">
-        <div className="progress health"></div>
-        <div className="progress-label">Health</div>
-      </div>
-      <div className="progress-bar">
-        <div className="progress stamina"></div>
-        <div className="progress-label">Stamina</div>
-      </div>
-      <div className="progress-bar">
-        <div className="progress hunger"></div>
-        <div className="progress-label">Hunger</div>
-      </div>
-      <div className="progress-bar">
-        <div className="progress thirst"></div>
-        <div className="progress-label">Thirst</div>
-      </div>
-      <div className="progress-bar">
-        <div className="progress bathroom"></div>
-        <div className="progress-label">Bathroom</div>
-      </div>
+      {STATS.map(({ key, label }) => {
+        const value = Math.max(0, Math.min(100, game[key] ?? 0))
+
+        return (
+          <div className="progress-bar" key={key}>
+            <div
+              className={`progress ${key}`}
+              style={{ width: `${value}%` }}
+            ></div>
+            <div className="progress-label">{label}</div>
+          </div>
+        )
+      })}
     </div>
   )
 }

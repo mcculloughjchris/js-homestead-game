@@ -44,6 +44,30 @@ onDayActionAdded((game, action, currentTime) => {
   }
 })
 
+// How much hunger/thirst/health build up or drain per hour of in-game time
+// passing (tune to taste)
+const HUNGER_PER_HOUR = 5
+const THIRST_PER_HOUR = 7
+const HEALTH_DECAY_PER_HOUR = 10
+
+onDayActionAdded((game, action) => {
+  if (game.gameEnded) return
+
+  game.hunger = Math.min(100, game.hunger + action.timeCost * HUNGER_PER_HOUR)
+  game.thirst = Math.min(100, game.thirst + action.timeCost * THIRST_PER_HOUR)
+
+  if (game.hunger >= 100 || game.thirst >= 100) {
+    game.health = Math.max(0, game.health - action.timeCost * HEALTH_DECAY_PER_HOUR)
+
+    if (game.health <= 0) {
+      game.gameEnded = true
+      mainWindow?.webContents.send('redirect', `/${game.id}/game-over`)
+    }
+  }
+
+  mainWindow?.webContents.send('update-game-data', game)
+})
+
 // Trigger a new game
 ipcMain.handle('trigger-new-game', async (e, name) => {
   const data = newGameData(name)
