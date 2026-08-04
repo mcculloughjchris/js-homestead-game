@@ -2,7 +2,7 @@ interface PlayerStatsProps {
   game: any
 }
 
-const STATS = [
+export const STATS = [
   { key: "health", label: "Health" },
   { key: "stamina", label: "Stamina" },
   { key: "hunger", label: "Hunger" },

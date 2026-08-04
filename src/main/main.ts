@@ -58,11 +58,12 @@ onDayActionAdded((game, action) => {
 
   if (game.hunger >= 100 || game.thirst >= 100) {
     game.health = Math.max(0, game.health - action.timeCost * HEALTH_DECAY_PER_HOUR)
+  }
 
-    if (game.health <= 0) {
-      game.gameEnded = true
-      mainWindow?.webContents.send('redirect', `/${game.id}/game-over`)
-    }
+  if (game.health <= 0) {
+    console.log('redirect!')
+    game.gameEnded = true
+    mainWindow?.webContents.send('redirect', `/${game.id}/game-over`)
   }
 
   mainWindow?.webContents.send('update-game-data', game)
@@ -157,6 +158,13 @@ ipcMain.handle('keypress', async (e, data) => {
     if (newLocation !== null) {
       const updatedGame = addDayAction(game, playerActions.move)
 
+      // The action itself may have ended the game (e.g. health hit 0 and a
+      // redirect to game-over was already sent) — don't also tell the
+      // renderer to navigate to the new room, which would clobber that.
+      if (updatedGame.gameEnded) {
+        return { days: updatedGame.days }
+      }
+
       return {
         newLocation,
         days: updatedGame.days
@@ -179,6 +187,13 @@ ipcMain.handle('keypress', async (e, data) => {
 
     if (newLocation !== null) {
       const updatedGame = addDayAction(game, playerActions.move)
+
+      // The action itself may have ended the game (e.g. health hit 0 and a
+      // redirect to game-over was already sent) — don't also tell the
+      // renderer to navigate to the new room, which would clobber that.
+      if (updatedGame.gameEnded) {
+        return { days: updatedGame.days }
+      }
 
       return {
         newLocation,
@@ -424,8 +439,11 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    resizable: false,
+    maximizable: false,
+    fullscreenable: false,
+    width: 1920,
+    height: 1080,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged

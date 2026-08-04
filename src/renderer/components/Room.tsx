@@ -64,7 +64,7 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
       />
       <PlayerStats game={game} />
       <Toasts />
-      <DebugOverlay game={game} />
+      <DebugOverlay />
       <PauseMenu paused={paused} />
     </div>
   )

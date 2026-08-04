@@ -1,5 +1,67 @@
 @import "the-new-css-reset/css/reset.css";
 
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.intro {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  .compy {
+    left: 50%;
+    height: 75vh;
+    position: absolute;
+    top: 35vh;
+    margin-top: -32.25vh;
+    margin-left: -25vw;
+    z-index: 1;
+  }
+
+  .hand {
+    transition: transform 200ms ease;
+    position: absolute;
+    height: 75vh;
+    z-index: 2;
+    bottom: -25vh;
+    left: 50vw;
+  }
+
+  .boss {
+    transition: transform 200ms ease;
+    position: absolute;
+    height: 15vh;
+    z-index: 2;
+    left: 30vw;
+    top: 25vh;
+  }
+
+  .gf {
+    transition: transform 200ms ease;
+    position: absolute;
+    height: 15vh;
+    z-index: 2;
+    left: 30vw;
+    top: 25vh;
+  }
+
+  .kvm {
+    transition: transform 200ms ease;
+    position: absolute;
+    width: 22vw;
+    z-index: 2;
+    left: 32vw;
+    top: 35vh;
+  }
+}
+
 .debug-table {
   opacity: 0.25;
   border: 1px solid #000000;
@@ -200,6 +262,7 @@ button {
   width: 100vw;
   height: 100vh;
   background-size: cover;
+  background-position: center center;
 }
 
 .calendar {

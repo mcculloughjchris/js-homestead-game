@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react"
+import useGame from "../hooks/useGame"
+import { STATS } from "../components/PlayerStats"
 
-interface DebugOverlayProps {
-  game: any
-}
-
-const DebugOverlay = ({ game }: DebugOverlayProps) => {
+const DebugOverlay = () => {
+  const { game, setGame } = useGame()
   const [active, setActive] = useState(false)
 
   useEffect(() => {
@@ -21,6 +20,12 @@ const DebugOverlay = ({ game }: DebugOverlayProps) => {
     }
   }, [ game ])
 
+  const handleStatChange = (key: string, value: string) => {
+    const parsed = Math.max(0, Math.min(100, Number(value) || 0))
+
+    setGame(prevGame => ({ ...prevGame, [key]: parsed }))
+  }
+
   if (active) {
     return (
       <table className="debug-table">
@@ -33,6 +38,22 @@ const DebugOverlay = ({ game }: DebugOverlayProps) => {
             <th>direction</th>
             <td>{game.currentDirection}</td>
           </tr>
+          {STATS.map(({ key, label }) => {
+            return (
+              <tr key={key}>
+                <th>{label}</th>
+                <td>
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    value={game[key] ?? 0}
+                    onChange={(e) => handleStatChange(key, e.target.value)}
+                  />
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     )
