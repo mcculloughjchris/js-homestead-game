@@ -25,38 +25,35 @@ body {
     z-index: 1;
   }
 
-  .hand {
-    transition: transform 200ms ease;
+  .hand,
+  .boss,
+  .gf,
+  .kvm {
+    transition: transform 200ms ease, opacity 200ms ease;
     position: absolute;
-    height: 75vh;
     z-index: 2;
+  }
+
+  .hand {
+    height: 75vh;
     bottom: -25vh;
     left: 50vw;
   }
 
   .boss {
-    transition: transform 200ms ease;
-    position: absolute;
     height: 15vh;
-    z-index: 2;
     left: 30vw;
     top: 25vh;
   }
 
   .gf {
-    transition: transform 200ms ease;
-    position: absolute;
     height: 15vh;
-    z-index: 2;
     left: 30vw;
     top: 25vh;
   }
 
   .kvm {
-    transition: transform 200ms ease;
-    position: absolute;
     width: 22vw;
-    z-index: 2;
     left: 32vw;
     top: 35vh;
   }

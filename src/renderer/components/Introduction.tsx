@@ -21,51 +21,56 @@ const animations: Animations = {
       transform: 'translate(0, 25vh)'
     },
     1000: {
-      transform: 'translate(-12vw, 15vh)'
+      transform: 'translate(-15vw, 18vh)'
     },
     1100: {
       transform: 'translate(0, 25vh)'
     },
     2000: {
-      transform: 'translate(-12vw, 15vh)'
+      transform: 'translate(-15vw, 18vh)'
     },
-    2100: {
+    2200: {
       transform: 'translate(0, 25vh)'
     },
     3000: {
-      transform: 'translate(-12vw, 15vh)'
+      transform: 'translate(-15vw, 18vh)'
     },
-    3100: {
+    3300: {
       transform: 'translate(0, 25vh)'
     }
   },
   boss: {
     0: {
-      opacity: 0
+      opacity: 0,
+      transform: 'translate(0, 0)'
     },
     1100: {
-      opacity: 1
+      opacity: 1,
+      transform: 'translate(0, -2vh)'
     },
-    2100: {
-      opacity: 0
+    2200: {
+      opacity: 0,
+      display: 'none'
     }
   },
   gf: {
     0: {
       opacity: 0
     },
-    2100: {
-      opacity: 1
+    2200: {
+      opacity: 1,
+      transform: 'translate(0, -2vh)'
     },
-    3100: {
-      opacity: 0
+    3300: {
+      opacity: 0,
+      display: 'none'
     }
   },
   kvm: {
     0: {
       opacity: 0
     },
-    3100: {
+    3300: {
       opacity: 1
     }
   }
