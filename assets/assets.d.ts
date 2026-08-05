@@ -19,6 +19,21 @@ declare module '*.jpg' {
   export default content;
 }
 
+declare module '*.mp3' {
+  const content: string;
+  export default content;
+}
+
+declare module '*.wav' {
+  const content: string;
+  export default content;
+}
+
+declare module '*.ogg' {
+  const content: string;
+  export default content;
+}
+
 declare module '*.scss' {
   const content: Styles;
   export default content;

@@ -6,6 +6,7 @@ import hand from '../../../assets/intro/hand.png'
 import boss from '../../../assets/intro/boss.png'
 import gf from '../../../assets/intro/gf.png'
 import kvm from '../../../assets/intro/kvmswitch.png'
+import useAudio from "../hooks/useAudio"
 
 interface Animations {
   [k: string]: {
@@ -81,6 +82,8 @@ const Introduction = () => {
   const [ animationMs, setAnimationMs ] = useState<number>(0)
   const navigate = useNavigate()
 
+  const { audio, ready } = useAudio()
+
   const redirectToTitleScreen = () => {
     navigate('/title-screen')
   }
@@ -97,13 +100,25 @@ const Introduction = () => {
   const handleInterval = () => {
     setAnimationMs(animationMs + 100)
 
-    if (animationMs >= 4000) {
+    if (animationMs >= 4500) {
       redirectToTitleScreen()
     }
   }
 
   useEffect(() => {
     const timeout = setTimeout(handleInterval, 100)
+
+    if ([1100, 2200, 3300].indexOf(animationMs) > -1) {
+      if (ready) {
+        audio.sfx.play("button_press")
+      }
+    }
+
+    if ([3400].indexOf(animationMs) > -1) {
+      if (ready) {
+        audio.sfx.play("intro")
+      }
+    }
 
     return () => {
       clearTimeout(timeout)

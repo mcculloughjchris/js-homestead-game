@@ -55,4 +55,13 @@ Fascist state: The National Restoration Government
 
 - [ ] Draw scenes
 - [ ] Draw characters
-- [ ] Player stat reduction
+- [x] Player stat reduction
+- [ ] Fridge inventory
+- [ ] Player inventory
+- [ ] Join revolutionary groups
+  - [ ] Grow jobs
+- [ ] Item list
+  - [ ] Icons
+  - [ ] Description
+  - [ ] Costs
+  - [ ] Shelf life
