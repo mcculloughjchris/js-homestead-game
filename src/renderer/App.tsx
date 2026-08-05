@@ -14,6 +14,7 @@ import Sleeping from './components/Sleeping';
 import Garden from './components/Garden';
 import Inventory from './components/Inventory';
 import GameOver from './components/GameOver';
+import useMouseParallax from './hooks/useMouseParallax';
 
 const paths = {
   intro: {
@@ -35,6 +36,8 @@ const paths = {
 }
 
 export default function App() {
+  useMouseParallax()
+
   return (
     <Router>
       <Routes>

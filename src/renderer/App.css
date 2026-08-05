@@ -72,8 +72,8 @@ body {
   background-image: url('../../assets/screens/title-screen.jpg');
   width: 100vw;
   height: 100vh;
-  background-size: 110%;
-  background-position: bottom -1vh center;
+  background-size: 125%;
+  background-position: calc(50% + var(--parallax-x, 0%)) calc(85% - 1vh + var(--parallax-y, 0%));
 }
 
 button {
@@ -258,8 +258,8 @@ button {
 .screen {
   width: 100vw;
   height: 100vh;
-  background-size: cover;
-  background-position: center center;
+  background-size: 125%;
+  background-position: calc(50% + var(--parallax-x, 0%)) calc(50% + var(--parallax-y, 0%));
 }
 
 .calendar {
