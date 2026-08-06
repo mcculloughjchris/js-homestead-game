@@ -21,6 +21,7 @@ import characters from '../static/characterData';
 import plantTypes from '../static/plantTypes';
 import newGameData from './newGameData';
 import { addDayAction, onDayActionAdded } from './dayActions';
+import { GameSettings, defaultSettings, loadSettings, saveSettings } from './gameSettings';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -90,6 +91,22 @@ ipcMain.handle('trigger-new-game', async (e, name) => {
   await fs.promises.writeFile(filePath, JSON.stringify(data), 'utf-8')
 
   return data
+})
+
+let currentSettings: GameSettings = defaultSettings
+
+// Load game settings (music/sfx volume, etc.)
+ipcMain.handle('load-settings', async () => {
+  currentSettings = await loadSettings(savePath)
+  return currentSettings
+})
+
+// Save game settings and notify the renderer of the change
+ipcMain.handle('save-settings', async (_e, settings: GameSettings) => {
+  currentSettings = settings
+  await saveSettings(savePath, settings)
+  mainWindow?.webContents.send('settings-updated', currentSettings)
+  return currentSettings
 })
 
 // Save the game

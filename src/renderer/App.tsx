@@ -15,6 +15,8 @@ import Garden from './components/Garden';
 import Inventory from './components/Inventory';
 import GameOver from './components/GameOver';
 import useMouseParallax from './hooks/useMouseParallax';
+import useGameSettings from './hooks/useGameSettings';
+import Settings from './components/Settings';
 
 const paths = {
   intro: {
@@ -32,11 +34,16 @@ const paths = {
   loadGame: {
     path: "/load-game",
     element: <LoadGameScreen />
+  },
+  settings: {
+    path: "/settings",
+    element: <Settings />
   }
 }
 
 export default function App() {
   useMouseParallax()
+  useGameSettings()
 
   return (
     <Router>
