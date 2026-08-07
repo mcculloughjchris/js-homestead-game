@@ -43,9 +43,13 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
 
   const renderImage = () => {
     if (typeof room?.images[facing] === "string") {
-      return (
-        <img src={room?.images[facing]} />
-      )
+      if (room.images[facing] !== "") {
+        return (
+          <img src={room?.images[facing]} />
+        )
+      } else {
+        return null
+      }
     } else {
       const RenderedRoom = room?.images[facing] as ElementType
       return (
