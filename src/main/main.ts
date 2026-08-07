@@ -24,6 +24,7 @@ import newGameData from './newGameData';
 import { addDayAction, onDayActionAdded } from './dayActions';
 import { GameSettings, defaultSettings, loadSettings, saveSettings } from './gameSettings';
 import { PLAYER_INVENTORY_ID, addItem, hasItem, removeItem, transferItem } from '../static/inventory';
+import items from '../static/items';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -264,6 +265,17 @@ const triggerDoorKnock = (gameData) => {
 // Trigger a door knock
 ipcMain.handle('trigger-door-knock', (_e, gameData) => {
   triggerDoorKnock(gameData)
+})
+
+// Debug/testing only - looks an item up by its display name and adds one to the player's inventory
+ipcMain.handle('trigger-add-item-to-inventory', (_e, gameData, itemName: string) => {
+  const item = Object.values(items).find((i) => i.id.toLowerCase() === itemName.toLowerCase())
+  if (!item) return null
+
+  const updatedGame = addItem(gameData, PLAYER_INVENTORY_ID, item.id, 1)
+  mainWindow?.webContents.send('update-game-data', updatedGame)
+
+  return updatedGame
 })
 
 // Start a conversation

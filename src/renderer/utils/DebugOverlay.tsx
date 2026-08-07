@@ -18,6 +18,10 @@ const DebugOverlay = () => {
     window.triggerDoorKnock = () => {
       window.electron.ipcRenderer.invoke('trigger-door-knock', game)
     }
+
+    window.addItemToInventory = (itemName: string) => {
+      window.electron.ipcRenderer.invoke('trigger-add-item-to-inventory', game, itemName)
+    }
   }, [ game ])
 
   const handleStatChange = (key: string, value: string) => {
