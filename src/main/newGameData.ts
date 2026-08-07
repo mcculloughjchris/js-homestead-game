@@ -1,5 +1,7 @@
 import { randomUUID } from 'crypto'
 import characters, { Character } from '../static/characterData'
+import { containers } from '../static/containers'
+import { PLAYER_INVENTORY_ID } from '../static/inventory'
 
 const newGameData = (name: string) => {
   const characterPositions = () => Object.values(characters).map((c: Character) => ({
@@ -7,6 +9,22 @@ const newGameData = (name: string) => {
     path: null,
     direction: null
   }))
+
+  const startingInventories = () => {
+    const inventories: Record<string, Record<string, number>> = {
+      [PLAYER_INVENTORY_ID]: {}
+    }
+
+    Object.values(characters).forEach((c: Character) => {
+      inventories[c.name] = { ...(c.startingInventory ?? {}) }
+    })
+
+    containers.forEach((container) => {
+      inventories[container.id] = { ...(container.startingInventory ?? {}) }
+    })
+
+    return inventories
+  }
 
   return {
     id: randomUUID(),
@@ -26,7 +44,7 @@ const newGameData = (name: string) => {
     characterPositions: characterPositions(),
     completedConvos: [],
     garden: Array.from({ length: 16 }, () => null),
-    inventory: {},
+    inventories: startingInventories(),
     gameEnded: false
   }
 }

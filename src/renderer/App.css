@@ -420,6 +420,32 @@ button {
   justify-content: center;
 }
 
+.inventory-transfer {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.inventory-transfer-column {
+  flex: 1;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  input[type="number"] {
+    width: 3rem;
+  }
+}
+
 .front-door-north {
   background-image: url('../../assets/screens/FrontDoorNorth.jpg');
 }

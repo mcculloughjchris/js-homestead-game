@@ -1,4 +1,5 @@
 import BedroomSouth from "../renderer/components/rooms/Bedroom/BedroomSouth"
+import BathroomNorth from "../renderer/components/rooms/Bathroom/BathroomNorth"
 import FrontDoorNorth from "../renderer/components/rooms/FrontDoor/FrontDoorNorth"
 import LRoom0East from "../renderer/components/rooms/LRoom0/LRoom0East"
 import LRoom0North from "../renderer/components/rooms/LRoom0/LRoom0North"
@@ -126,7 +127,7 @@ export const roomValues: RoomValues = {
   bathroom: {
     path: "bathroom",
     images: {
-      n: "",
+      n: BathroomNorth,
       s: "",
       e: "",
       w: ""

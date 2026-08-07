@@ -22,6 +22,7 @@ import plantTypes from '../static/plantTypes';
 import newGameData from './newGameData';
 import { addDayAction, onDayActionAdded } from './dayActions';
 import { GameSettings, defaultSettings, loadSettings, saveSettings } from './gameSettings';
+import { PLAYER_INVENTORY_ID, addItem, transferItem } from '../static/inventory';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -386,6 +387,11 @@ ipcMain.handle('plant-seed', (_e, game, bedIndex: number, plantId: string) => {
   return { ...gameResult, garden }
 })
 
+// Move items between two inventories (e.g. player <-> a chest)
+ipcMain.handle('transfer-item', (_e, game, fromOwnerId: string, toOwnerId: string, itemId: string, quantity: number) => {
+  return transferItem(game, fromOwnerId, toOwnerId, itemId, quantity)
+})
+
 // Harvest a fully-grown garden bed
 ipcMain.handle('harvest-plant', (_e, game, bedIndex: number) => {
   const bed = game.garden[bedIndex]
@@ -402,11 +408,10 @@ ipcMain.handle('harvest-plant', (_e, game, bedIndex: number) => {
   const garden = [...game.garden]
   garden[bedIndex] = null
 
-  const inventory = { ...game.inventory }
-  inventory[bed.plantId] = (inventory[bed.plantId] || 0) + bed.harvestAmount
+  const updatedGame = addItem({ ...game, garden }, PLAYER_INVENTORY_ID, bed.plantId, bed.harvestAmount)
 
   return {
-    game: { ...game, garden, inventory },
+    game: updatedGame,
     plantName: plantType.name,
     amount: bed.harvestAmount
   }

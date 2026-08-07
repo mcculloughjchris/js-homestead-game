@@ -1,7 +1,7 @@
 import { RenderedRoomProps } from "../../Room"
 import CharacterConversation from "../../CharacterConversation"
 
-const LRoom4North = ({ game }: RenderedRoomProps) => {
+const LRoom4North = ({ game, setGame }: RenderedRoomProps) => {
   const characterInRoom = game.characterPositions.find(c => c.path === "lroom4" && c.direction === "n")
 
   return (
@@ -9,6 +9,7 @@ const LRoom4North = ({ game }: RenderedRoomProps) => {
       {characterInRoom !== undefined ? (
         <CharacterConversation
           game={game}
+          setGame={setGame}
           characterName={characterInRoom.name}
         />
       ) : null}

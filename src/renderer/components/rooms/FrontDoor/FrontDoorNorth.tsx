@@ -1,7 +1,7 @@
 import { RenderedRoomProps } from "../../Room"
 import CharacterConversation from "../../CharacterConversation"
 
-const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
+const FrontDoorNorth = ({ game, setGame }: RenderedRoomProps) => {
   // const currentlyAtDoor = game.characterPositions.find(c => c.path === "front-door" && c.direction === "n")
   const currentlyAtDoor = game.currentDoor
 
@@ -9,6 +9,7 @@ const FrontDoorNorth = ({ game }: RenderedRoomProps) => {
     return (
       <CharacterConversation
         game={game}
+        setGame={setGame}
         characterName={currentlyAtDoor}
         triggerLabel="Answer door"
       />

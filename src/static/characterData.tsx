@@ -15,6 +15,8 @@ export interface Character {
   name: string
   class: "traveler" | "neighbor" | "government" | "needy" | "media"
   conversations?: Conversation[]
+  /** Items this character has available to trade from the start of the game. */
+  startingInventory?: Record<string, number>
 }
 
 interface Characters {
@@ -73,6 +75,10 @@ const characters: Characters = {
   'Beekeeper': {
     name: 'Beekeeper',
     class: "neighbor",
+    startingInventory: {
+      honey: 3,
+      beeswax: 2
+    },
     conversations: [
       {
         id: 'beekeeper_introduction',

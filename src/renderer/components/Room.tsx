@@ -17,6 +17,7 @@ interface RoomProps {
 
 export interface RenderedRoomProps {
   game: any
+  setGame: (updater: any) => void
 }
 
 const Room = ({ facing, data = null, ...args }: RoomProps) => {
@@ -49,6 +50,7 @@ const Room = ({ facing, data = null, ...args }: RoomProps) => {
       return (
         <RenderedRoom
           game={game}
+          setGame={setGame}
         />
       )
     }

@@ -1,15 +1,18 @@
 import { useState } from "react"
 import { Conversation, Response } from "../../static/characterData"
+import InventoryTransfer from "./InventoryTransfer"
+import { PLAYER_INVENTORY_ID } from "../../static/inventory"
 
 interface CharacterConversationProps {
   game: any
+  setGame: (updater: any) => void
   characterName: string
   triggerLabel?: string
 }
 
-const CharacterConversation = ({ game, characterName, triggerLabel = "Talk" }: CharacterConversationProps) => {
-  console.log(characterName)
+const CharacterConversation = ({ game, setGame, characterName, triggerLabel = "Talk" }: CharacterConversationProps) => {
   const [ conversationData, setConversationData ] = useState<Conversation | null>(null)
+  const [ trading, setTrading ] = useState(false)
 
   const startConversation = async () => {
     const result = await window.electron.ipcRenderer.invoke('convo-start', characterName, game)
@@ -30,6 +33,22 @@ const CharacterConversation = ({ game, characterName, triggerLabel = "Talk" }: C
   const handleContinueButtonClick = async () => {
     await window.electron.ipcRenderer.invoke('convo-end', conversationData?.id, game)
     setConversationData(null)
+  }
+
+  if (trading) {
+    return (
+      <div className="convo">
+        <InventoryTransfer
+          game={game}
+          setGame={setGame}
+          fromOwnerId={PLAYER_INVENTORY_ID}
+          toOwnerId={characterName}
+          fromLabel="You"
+          toLabel={characterName}
+        />
+        <button onClick={() => setTrading(false)}>Close</button>
+      </div>
+    )
   }
 
   if (conversationData !== null) {
@@ -56,6 +75,7 @@ const CharacterConversation = ({ game, characterName, triggerLabel = "Talk" }: C
   return (
     <div>
       <button onClick={startConversation}>{triggerLabel}</button>
+      <button onClick={() => setTrading(true)}>Trade</button>
     </div>
   )
 }
