@@ -2,6 +2,8 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import useGame from "../hooks/useGame"
 import plantTypes from "../../static/plantTypes"
+import seedItems from "../../static/seedTypes"
+import { PLAYER_INVENTORY_ID, getInventory } from "../../static/inventory"
 import Toasts from "./Toasts"
 import Clock from "./Clock"
 
@@ -19,6 +21,8 @@ const Garden = () => {
 
   const garden = game.garden || []
   const currentDay = game.days.length - 1
+  const playerInventory = getInventory(game, PLAYER_INVENTORY_ID)
+  const availableSeeds = Object.values(seedItems).filter(seed => (playerInventory[seed.id] ?? 0) > 0)
 
   const handleBackButtonClick = () => {
     navigate(`/${game.id}/porch2/s`)
@@ -47,12 +51,17 @@ const Garden = () => {
     }
   }
 
-  const handlePlantSeed = async (plantId: string) => {
+  const handlePlantSeed = async (seedId: string) => {
     if (selectedBed === null) return
 
-    const result = await window.electron.ipcRenderer.invoke('plant-seed', game, selectedBed, plantId)
-    setGame(result)
-    setSelectedBed(null)
+    const result = await window.electron.ipcRenderer.invoke('plant-seed', game, selectedBed, seedId)
+
+    if (result) {
+      setGame(result)
+      setSelectedBed(null)
+    } else {
+      dispatchToast("You don't have that seed.", "danger")
+    }
   }
 
   return (
@@ -101,14 +110,18 @@ const Garden = () => {
 
       {selectedBed !== null ? (
         <div className="seed-picker">
-          {Object.values(plantTypes).map(plantType => {
-            return (
-              <button
-                key={plantType.id}
-                onClick={() => handlePlantSeed(plantType.id)}
-              >{plantType.name}</button>
-            )
-          })}
+          {availableSeeds.length === 0 ? (
+            <p>You don't have any seeds to plant.</p>
+          ) : (
+            availableSeeds.map(seed => {
+              return (
+                <button
+                  key={seed.id}
+                  onClick={() => handlePlantSeed(seed.id)}
+                >{seed.name} ({playerInventory[seed.id]})</button>
+              )
+            })
+          )}
           <button onClick={() => setSelectedBed(null)}>Cancel</button>
         </div>
       ) : null}

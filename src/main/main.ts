@@ -19,10 +19,11 @@ import { roomValues } from '../static/mapData';
 import playerActions from '../static/playerActions';
 import characters from '../static/characterData';
 import plantTypes from '../static/plantTypes';
+import seedItems from '../static/seedTypes';
 import newGameData from './newGameData';
 import { addDayAction, onDayActionAdded } from './dayActions';
 import { GameSettings, defaultSettings, loadSettings, saveSettings } from './gameSettings';
-import { PLAYER_INVENTORY_ID, addItem, transferItem } from '../static/inventory';
+import { PLAYER_INVENTORY_ID, addItem, hasItem, removeItem, transferItem } from '../static/inventory';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -370,19 +371,26 @@ ipcMain.handle('sleep', (_e, data) => {
 })
 
 // Plant a seed in an empty garden bed
-ipcMain.handle('plant-seed', (_e, game, bedIndex: number, plantId: string) => {
-  const plantType = plantTypes[plantId]
-  if (!plantType) return game
-  if (game.garden[bedIndex] !== null && game.garden[bedIndex] !== undefined) return game
+ipcMain.handle('plant-seed', (_e, game, bedIndex: number, seedId: string) => {
+  const seed = seedItems[seedId]
+  if (!seed) return null
 
-  const garden = [...game.garden]
+  const plantType = plantTypes[seed.grows]
+  if (!plantType) return null
+
+  if (game.garden[bedIndex] !== null && game.garden[bedIndex] !== undefined) return null
+  if (!hasItem(game, PLAYER_INVENTORY_ID, seedId, 1)) return null
+
+  const gameAfterSeedRemoved = removeItem(game, PLAYER_INVENTORY_ID, seedId, 1)
+
+  const garden = [...gameAfterSeedRemoved.garden]
   garden[bedIndex] = {
-    plantId,
-    plantedOnDay: game.days.length - 1,
+    plantId: seed.grows,
+    plantedOnDay: gameAfterSeedRemoved.days.length - 1,
     harvestAmount: randomBetween(plantType.minHarvest, plantType.maxHarvest)
   }
 
-  const gameResult = addDayAction(game, playerActions.plant)
+  const gameResult = addDayAction(gameAfterSeedRemoved, playerActions.plant)
 
   return { ...gameResult, garden }
 })

@@ -60,3 +60,5 @@ const seedItems: SeedTypes = {
     value: 5
   }
 }
+
+export default seedItems

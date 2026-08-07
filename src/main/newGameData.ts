@@ -1,7 +1,10 @@
 import { randomUUID } from 'crypto'
 import characters, { Character } from '../static/characterData'
 import { containers } from '../static/containers'
+import seedItems from '../static/seedTypes'
 import { PLAYER_INVENTORY_ID } from '../static/inventory'
+
+const STARTING_SEED_COUNT = 2
 
 const newGameData = (name: string) => {
   const characterPositions = () => Object.values(characters).map((c: Character) => ({
@@ -12,7 +15,10 @@ const newGameData = (name: string) => {
 
   const startingInventories = () => {
     const inventories: Record<string, Record<string, number>> = {
-      [PLAYER_INVENTORY_ID]: {}
+      [PLAYER_INVENTORY_ID]: Object.values(seedItems).reduce((acc, seed) => {
+        acc[seed.id] = STARTING_SEED_COUNT
+        return acc
+      }, {} as Record<string, number>)
     }
 
     Object.values(characters).forEach((c: Character) => {

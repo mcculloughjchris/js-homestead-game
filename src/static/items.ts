@@ -2,6 +2,7 @@ import { Item } from './itemTypes'
 import plantTypes from './plantTypes'
 import tradeGoods from './tradeGoods'
 import bookItems from './bookItems'
+import seedItems from './seedTypes'
 
 /**
  * Every item in the game, regardless of category, keyed by id - the single
@@ -15,7 +16,8 @@ import bookItems from './bookItems'
 const items: Record<string, Item> = {
   ...plantTypes,
   ...tradeGoods,
-  ...bookItems
+  ...bookItems,
+  ...seedItems
 }
 
 export default items
