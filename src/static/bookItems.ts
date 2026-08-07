@@ -15,63 +15,72 @@ const bookItems: BookTypes = {
     name: 'Quotations from Chairman Mao Tse-tung',
     category: 'book',
     author: 'Mao Tse-tung',
-    value: 100
+    value: 100,
+    illegal: true
   },
   'The Communist Manifesto': {
     id: 'the_communist_manifesto',
     name: 'The Communist Manifesto',
     category: 'book',
     author: 'Karl Marx',
-    value: 200
+    value: 200,
+    illegal: true
   },
   'The State and Revolution': {
     id: 'the_state_and_revolution',
     name: 'The State and Revolution',
     category: 'book',
     author: 'Vladimir Lenin',
-    value: 100
+    value: 100,
+    illegal: true
   },
   'Socialism: Utopian and Scientific': {
     id: 'socialism_utopian_and_scientific',
     name: 'Socialism: Utopian and Scientific',
     category: 'book',
     author: 'Friedrich Engels',
-    value: 125
+    value: 125,
+    illegal: true
   },
   'A Hacker Manifesto': {
     id: 'a_hacker_manifesto',
     name: 'A Hacker Manifesto',
     category: 'book',
     author: 'McKenzie Wark',
-    value: 85
+    value: 85,
+    illegal: true
   },
   'Why Socialism?': {
     id: 'why_socialism',
     name: 'Why Socialism?',
     category: 'book',
     author: 'Albert Einstein',
-    value: 75
+    value: 75,
+    illegal: true
   },
   'Revolutionary Suicide': {
     id: 'revolutionary_suicide',
     name: 'Revolutionary Suicide',
     category: 'book',
     author: 'Huey P. Newton',
-    value: 125
+    value: 125,
+    illegal: true
   },
   'What Is to Be Done?': {
     id: 'what_is_to_be_done',
     name: 'What Is to Be Done?',
     category: 'book',
     author: 'Vladimir Lenin',
-    value: 250
+    value: 250,
+    illegal: true
   },
   'Das Kapital': {
     id: 'das_kapital',
     name: 'Das Kapital',
     category: 'book',
     author: 'Karl Marx',
-    value: 300
+    value: 300,
+    illegal: true
   }
 }
 

@@ -9,4 +9,5 @@ export interface Item {
   name: string
   value: number
   category: string
+  illegal: boolean
 }

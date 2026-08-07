@@ -15,28 +15,32 @@ const seedItems: SeedTypes = {
     name: 'Lettuce seed',
     category: 'seed',
     grows: 'lettuce',
-    value: 5
+    value: 5,
+    illegal: false
   },
   peas_seed: {
     id: 'peas_seed',
     name: 'Peas seed',
     category: 'seed',
     grows: 'peas',
-    value: 5
+    value: 5,
+    illegal: false
   },
   cucumber_seed: {
     id: 'cucumber_seed',
     name: 'Cucumber seed',
     category: 'seed',
     grows: 'cucumber',
-    value: 5
+    value: 5,
+    illegal: false
   },
   tomato_seed: {
     id: 'tomato_seed',
     name: 'Tomato seed',
     category: 'seed',
     grows: 'tomato',
-    value: 5
+    value: 5,
+    illegal: false
   },
   carrot_seed: {
     id: 'carrot_seed',
@@ -44,20 +48,23 @@ const seedItems: SeedTypes = {
     category: 'seed',
     grows: 'carrot',
     value: 5,
+    illegal: false
   },
   asparagus_seed: {
     id: 'asparagus_seed',
     name: 'Asparagus seed',
     category: 'seed',
     grows: 'asparagus',
-    value: 5
+    value: 5,
+    illegal: false
   },
   strawberry_seed: {
     id: 'strawberry_seed',
     name: 'Strawberry seed',
     category: 'seed',
     grows: 'strawberry',
-    value: 5
+    value: 5,
+    illegal: false
   }
 }
 

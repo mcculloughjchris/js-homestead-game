@@ -10,13 +10,15 @@ const tradeGoods: Record<string, TradeGood> = {
     id: 'honey',
     name: 'Honey',
     category: 'tradeGood',
-    value: 10
+    value: 10,
+    illegal: false
   },
   beeswax: {
     id: 'beeswax',
     name: 'Beeswax',
     category: 'tradeGood',
-    value: 15
+    value: 15,
+    illegal: false
   }
 }
 

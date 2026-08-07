@@ -19,7 +19,8 @@ const plantTypes: PlantTypes = {
     daysToGrow: 3,
     minHarvest: 1,
     maxHarvest: 4,
-    value: 5
+    value: 5,
+    illegal: false
   },
   peas: {
     id: 'peas',
@@ -28,7 +29,8 @@ const plantTypes: PlantTypes = {
     daysToGrow: 4,
     minHarvest: 2,
     maxHarvest: 6,
-    value: 2
+    value: 2,
+    illegal: false
   },
   cucumber: {
     id: 'cucumber',
@@ -37,7 +39,8 @@ const plantTypes: PlantTypes = {
     daysToGrow: 5,
     minHarvest: 1,
     maxHarvest: 3,
-    value: 3
+    value: 3,
+    illegal: false
   },
   tomato: {
     id: 'tomato',
@@ -46,7 +49,8 @@ const plantTypes: PlantTypes = {
     daysToGrow: 6,
     minHarvest: 2,
     maxHarvest: 5,
-    value: 3
+    value: 3,
+    illegal: false
   },
   carrot: {
     id: 'carrot',
@@ -55,7 +59,8 @@ const plantTypes: PlantTypes = {
     daysToGrow: 4,
     minHarvest: 2,
     maxHarvest: 5,
-    value: 3
+    value: 3,
+    illegal: false
   },
   asparagus: {
     id: 'asparagus',
@@ -64,7 +69,8 @@ const plantTypes: PlantTypes = {
     daysToGrow: 7,
     minHarvest: 1,
     maxHarvest: 3,
-    value: 6
+    value: 6,
+    illegal: false
   },
   strawberry: {
     id: 'strawberry',
@@ -73,7 +79,8 @@ const plantTypes: PlantTypes = {
     daysToGrow: 5,
     minHarvest: 3,
     maxHarvest: 8,
-    value: 2
+    value: 2,
+    illegal: false
   }
 }
 
