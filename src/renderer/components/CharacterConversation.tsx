@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Conversation, Response } from "../../static/characterData"
 import InventoryTransfer from "./InventoryTransfer"
 import { PLAYER_INVENTORY_ID } from "../../static/inventory"
@@ -13,6 +13,16 @@ interface CharacterConversationProps {
 const CharacterConversation = ({ game, setGame, characterName, triggerLabel = "Talk" }: CharacterConversationProps) => {
   const [ conversationData, setConversationData ] = useState<Conversation | null>(null)
   const [ trading, setTrading ] = useState(false)
+
+  // A forced conversation (e.g. getting caught mid-inspection) is carried in
+  // persistent game state rather than a one-shot event, so it's picked up
+  // reliably regardless of exactly when this component mounts/re-renders -
+  // see InspectionManager's onCaught in main.ts.
+  useEffect(() => {
+    if (game.forcedConversation?.characterName === characterName) {
+      setConversationData(game.forcedConversation.conversation)
+    }
+  }, [ game.forcedConversation, characterName ])
 
   const startConversation = async () => {
     const result = await window.electron.ipcRenderer.invoke('convo-start', characterName, game)

@@ -25,6 +25,7 @@ import { addDayAction, onDayActionAdded } from './dayActions';
 import { GameSettings, defaultSettings, loadSettings, saveSettings } from './gameSettings';
 import { PLAYER_INVENTORY_ID, addItem, hasItem, removeItem, transferItem } from '../static/inventory';
 import items from '../static/items';
+import inspectionManager from './inspection/InspectionManager';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -328,6 +329,9 @@ ipcMain.handle('convo-end', (_e, id, game) => {
         break;
       case 'leaveDoor':
         return leaveDoor(game, ...args)
+      case 'startInspection':
+        // @ts-ignore
+        return startInspection(game, ...args)
     }
   }
 })
@@ -362,6 +366,7 @@ const leaveDoor = (game: any, who: string) => {
     ...game
   }
   response.currentDoor = undefined
+  response.forcedConversation = undefined
   response.characterPositions = game.characterPositions.map(c => {
     if (c.name === who) {
       return {
@@ -375,6 +380,51 @@ const leaveDoor = (game: any, who: string) => {
   })
   mainWindow?.webContents.send('update-game-data', response)
   return response
+}
+
+// Kicks off Inspection Mode for the given character - see InspectionManager for the
+// actual walk/search/discover state machine. React only renders game.inspection.
+const startInspection = (game: any, officerName: string) => {
+  const character = characters[officerName]
+  if (!character) return game
+
+  // The officer has physically left the doorway to walk through the house,
+  // so the door conversation UI shouldn't still be showing.
+  const gameWithoutDoor = { ...game, currentDoor: undefined }
+
+  return inspectionManager.start(gameWithoutDoor, officerName, {
+    onUpdate: (updatedGame) => {
+      mainWindow?.webContents.send('update-game-data', updatedGame)
+    },
+    onCaught: (updatedGame) => {
+      const caughtConvo = character.conversations?.find(c => c.id === 'officer_caught')
+
+      // Put the officer back at the door and hand control to the dialogue
+      // system with a forced conversation - see CharacterConversation.tsx,
+      // which watches game.forcedConversation and adopts it directly rather
+      // than waiting for the player to click "Talk"/"Answer door".
+      const finalGame = {
+        ...updatedGame,
+        currentDoor: officerName,
+        characterPositions: updatedGame.characterPositions.map((c: any) => (
+          c.name === officerName ? { ...c, path: 'front-door', direction: 'n' } : c
+        )),
+        forcedConversation: caughtConvo ? { characterName: officerName, conversation: caughtConvo } : undefined
+      }
+
+      mainWindow?.webContents.send('update-game-data', finalGame)
+    },
+    onComplete: (updatedGame) => {
+      const finalGame = {
+        ...updatedGame,
+        characterPositions: updatedGame.characterPositions.map((c: any) => (
+          c.name === officerName ? { ...c, path: null, direction: null } : c
+        ))
+      }
+
+      mainWindow?.webContents.send('update-game-data', finalGame)
+    }
+  })
 }
 
 ipcMain.handle('sleep', (_e, data) => {

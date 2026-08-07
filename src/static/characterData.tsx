@@ -138,7 +138,33 @@ const characters: Characters = {
   'Officer': {
     name: 'Officer',
     class: 'government',
-    conversations: []
+    conversations: [
+      {
+        id: 'officer_introduction',
+        text: "This is a routine inspection. I need to come in and take a look around.",
+        starter: true,
+        responses: [
+          {
+            text: "Sure, go ahead.",
+            goto: 'officer_introduction_allow'
+          }
+        ]
+      },
+      {
+        id: 'officer_introduction_allow',
+        text: "This won't take long.",
+        starter: false,
+        afterContinue: "startInspection('Officer')"
+      },
+      // Placeholder for what happens once the player's caught - branching
+      // dialogue (arrest/bribery/etc) is intentionally not implemented yet.
+      {
+        id: 'officer_caught',
+        text: "You are in possession of illegal materials.",
+        starter: false,
+        afterContinue: "leaveDoor('Officer')"
+      }
+    ]
   },
   'Utility': {
     name: 'Utility',
