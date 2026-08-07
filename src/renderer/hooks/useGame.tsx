@@ -21,12 +21,16 @@ export const GameProvider = () => {
     setGame(e.detail.data)
   }
 
+  // Merge rather than replace - senders (e.g. the hunger/thirst listener,
+  // door-knock) only include the specific fields they changed, and a stale
+  // full replace here could otherwise clobber a concurrent update (like
+  // movement) landing via a different channel.
   const handleUpdateGameData = (e) => {
-    setGame(e.detail.data)
+    setGame(prevGame => ({ ...prevGame, ...e.detail.data }))
   }
 
   const handleElectronUpdateGameData = (data) => {
-    setGame(data)
+    setGame(prevGame => ({ ...prevGame, ...data }))
   }
 
   const handleElectronRedirect = (location) => {

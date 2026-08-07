@@ -71,7 +71,16 @@ onDayActionAdded((game, action) => {
     mainWindow?.webContents.send('redirect', `/${game.id}/game-over`)
   }
 
-  mainWindow?.webContents.send('update-game-data', game)
+  // Only send the fields this listener actually changed - it fires on every
+  // single move, so broadcasting the whole (possibly-stale) game object here
+  // races with the keypress handler's own newLocation update and can
+  // intermittently stomp on it depending on which arrives first.
+  mainWindow?.webContents.send('update-game-data', {
+    hunger: game.hunger,
+    thirst: game.thirst,
+    health: game.health,
+    gameEnded: game.gameEnded
+  })
 })
 
 // Trigger a new game
@@ -260,7 +269,13 @@ const triggerDoorKnock = (gameData) => {
   }))
   gameData.currentDoor = chosenCharacter.name
 
-  mainWindow?.webContents.send('door-knock', gameData)
+  // Only the fields actually changed here - see the hunger/thirst listener
+  // above for why sending the whole (possibly-stale) gameData races with
+  // concurrent movement updates.
+  mainWindow?.webContents.send('door-knock', {
+    characterPositions: gameData.characterPositions,
+    currentDoor: gameData.currentDoor
+  })
 }
 
 // Trigger a door knock
