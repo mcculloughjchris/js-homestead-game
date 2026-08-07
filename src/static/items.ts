@@ -25,6 +25,6 @@ export default items
 export const getItem = (itemId: string): Item | undefined => items[itemId]
 
 /** Resolves any item id to a display name, falling back to the raw id if it's not registered anywhere. */
-export const resolveItemName = (itemId: string): string => getItem(itemId)?.name ?? itemId
+export const resolveItemName = (itemId: string): string => getItem(itemId)?.id ?? itemId
 
 export const allItems = (): Item[] => Object.values(items)

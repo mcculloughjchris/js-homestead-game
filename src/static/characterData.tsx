@@ -156,11 +156,51 @@ const characters: Characters = {
         starter: false,
         afterContinue: "startInspection('Officer')"
       },
-      // Placeholder for what happens once the player's caught - branching
-      // dialogue (arrest/bribery/etc) is intentionally not implemented yet.
+      // Nothing found - a quick, friendly send-off.
+      {
+        id: 'officer_all_clear',
+        text: "Everything looks good here. Have a nice day.",
+        starter: false,
+        afterContinue: "leaveDoor('Officer')"
+      },
+      // Something illegal was found - branches into give up/bribe/fight.
+      // Each branch is currently just a placeholder response; the actual
+      // consequences (arrest sequence, bribery cost, combat) aren't
+      // implemented yet - see InspectionManager's extension point notes.
       {
         id: 'officer_caught',
-        text: "You are in possession of illegal materials.",
+        text: "Sir, you're going to have to come with me.",
+        starter: false,
+        responses: [
+          {
+            text: "Give up",
+            goto: 'officer_caught_give_up'
+          },
+          {
+            text: "Offer a bribe",
+            goto: 'officer_caught_bribe'
+          },
+          {
+            text: "Fight",
+            goto: 'officer_caught_fight'
+          }
+        ]
+      },
+      {
+        id: 'officer_caught_give_up',
+        text: "Smart choice. Let's go.",
+        starter: false,
+        afterContinue: "leaveDoor('Officer')"
+      },
+      {
+        id: 'officer_caught_bribe',
+        text: "...I suppose we could work something out.",
+        starter: false,
+        afterContinue: "leaveDoor('Officer')"
+      },
+      {
+        id: 'officer_caught_fight',
+        text: "You really don't want to do that.",
         starter: false,
         afterContinue: "leaveDoor('Officer')"
       }

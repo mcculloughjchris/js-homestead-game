@@ -430,11 +430,18 @@ const startInspection = (game: any, officerName: string) => {
       mainWindow?.webContents.send('update-game-data', finalGame)
     },
     onComplete: (updatedGame) => {
+      const allClearConvo = character.conversations?.find(c => c.id === 'officer_all_clear')
+
+      // Same pattern as onCaught - officer's back at the door for one last
+      // exchange before actually leaving (which officer_all_clear's own
+      // afterContinue/leaveDoor handles).
       const finalGame = {
         ...updatedGame,
+        currentDoor: officerName,
         characterPositions: updatedGame.characterPositions.map((c: any) => (
-          c.name === officerName ? { ...c, path: null, direction: null } : c
-        ))
+          c.name === officerName ? { ...c, path: 'front-door', direction: 'n' } : c
+        )),
+        forcedConversation: allClearConvo ? { characterName: officerName, conversation: allClearConvo } : undefined
       }
 
       mainWindow?.webContents.send('update-game-data', finalGame)

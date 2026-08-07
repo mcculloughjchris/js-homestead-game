@@ -10,7 +10,7 @@ export interface BookTypes {
 }
 
 const bookItems: BookTypes = {
-  'Quotations from Chairman Mao Tse-tung': {
+  'quotations_from_chairman_mao_tse-tung': {
     id: 'quotations_from_chairman_mao_tse-tung',
     name: 'Quotations from Chairman Mao Tse-tung',
     category: 'book',
@@ -18,7 +18,7 @@ const bookItems: BookTypes = {
     value: 100,
     illegal: true
   },
-  'The Communist Manifesto': {
+  'the_communist_manifesto': {
     id: 'the_communist_manifesto',
     name: 'The Communist Manifesto',
     category: 'book',
@@ -26,7 +26,7 @@ const bookItems: BookTypes = {
     value: 200,
     illegal: true
   },
-  'The State and Revolution': {
+  'the_state_and_revolution': {
     id: 'the_state_and_revolution',
     name: 'The State and Revolution',
     category: 'book',
@@ -34,7 +34,7 @@ const bookItems: BookTypes = {
     value: 100,
     illegal: true
   },
-  'Socialism: Utopian and Scientific': {
+  'socialism_utopian_and_scientific': {
     id: 'socialism_utopian_and_scientific',
     name: 'Socialism: Utopian and Scientific',
     category: 'book',
@@ -42,7 +42,7 @@ const bookItems: BookTypes = {
     value: 125,
     illegal: true
   },
-  'A Hacker Manifesto': {
+  'a_hacker_manifesto': {
     id: 'a_hacker_manifesto',
     name: 'A Hacker Manifesto',
     category: 'book',
@@ -50,7 +50,7 @@ const bookItems: BookTypes = {
     value: 85,
     illegal: true
   },
-  'Why Socialism?': {
+  'why_socialism': {
     id: 'why_socialism',
     name: 'Why Socialism?',
     category: 'book',
@@ -58,7 +58,7 @@ const bookItems: BookTypes = {
     value: 75,
     illegal: true
   },
-  'Revolutionary Suicide': {
+  'revolutionary_suicide': {
     id: 'revolutionary_suicide',
     name: 'Revolutionary Suicide',
     category: 'book',
@@ -66,7 +66,7 @@ const bookItems: BookTypes = {
     value: 125,
     illegal: true
   },
-  'What Is to Be Done?': {
+  'what_is_to_be_done': {
     id: 'what_is_to_be_done',
     name: 'What Is to Be Done?',
     category: 'book',
@@ -74,7 +74,7 @@ const bookItems: BookTypes = {
     value: 250,
     illegal: true
   },
-  'Das Kapital': {
+  'das_kapital': {
     id: 'das_kapital',
     name: 'Das Kapital',
     category: 'book',

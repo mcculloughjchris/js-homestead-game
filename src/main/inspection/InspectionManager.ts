@@ -231,7 +231,8 @@ class InspectionManager {
       1,
       (container.searchChance ?? DEFAULT_SEARCH_CHANCE) * session.profile.thoroughness
     )
-    const willSearch = session.rng.chance(searchChance)
+    // const willSearch = session.rng.chance(searchChance)
+    const willSearch = true
 
     this.updateState(session, {
       phase: willSearch ? 'searching' : 'paused',
@@ -257,8 +258,10 @@ class InspectionManager {
     // a per-container `concealment` field factored in here alongside
     // thoroughness. Not implemented - containers are fully visible today.
     const inventory = getInventory(session.game, container.id)
+    console.log(inventory)
     const illegalItemId = Object.keys(inventory).find((itemId) => {
       if ((inventory[itemId] ?? 0) <= 0) return false
+      console.log(getItem(itemId))
       return getItem(itemId)?.illegal === true
     })
 
