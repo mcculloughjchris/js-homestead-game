@@ -9,6 +9,7 @@ export interface Conversation {
   starter: boolean
   responses?: Response[]
   afterContinue?: string
+  repeatable?: boolean
 }
 
 export interface Character {
@@ -22,6 +23,10 @@ export interface Character {
    *  DAY_END_HOUR in gameTime.ts). Compared inclusively against the same currentTime value
    *  onDayActionAdded listeners already receive - see triggerDoorKnock in main.ts. */
   activeHours?: { start: number; end: number }
+  /** Number of days that must have passed before this character can be selected for a
+   *  door-knock (0-indexed, matching game.days.length - 1 elsewhere in the codebase - e.g. 1
+   *  means "not until day 2"). Omit (or 0) for no restriction - available from day one. */
+  unlockAfterDays?: number
 }
 
 interface Characters {
@@ -144,11 +149,13 @@ const characters: Characters = {
     name: 'Officer',
     class: 'government',
     activeHours: { start: 900, end: 1700 }, // business hours only
+    unlockAfterDays: 1, // no inspection on day one
     conversations: [
       {
         id: 'officer_introduction',
         text: "This is a routine inspection. I need to come in and take a look around.",
         starter: true,
+        repeatable: true,
         responses: [
           {
             text: "Sure, go ahead.",

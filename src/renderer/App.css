@@ -94,7 +94,14 @@ button {
 .time {
   position: fixed;
   bottom: 13rem;
-  right: 5rem;
+  right: 1rem;
+  font-size: 24px;
+}
+
+.day {
+  position: fixed;
+  bottom: 15rem;
+  right: 1rem;
   font-size: 24px;
 }
 

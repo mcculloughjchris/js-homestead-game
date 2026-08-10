@@ -9,7 +9,10 @@ const Clock = ({ days }: ClockProps) => {
   const currentTime = formatTime12Hour(getCurrentDecimalHours(days))
 
   return (
-    <div className="time">{currentTime}</div>
+    <>
+      <div className="day">Day {days.length > 1 ? days.length : 1}</div>
+      <div className="time">{currentTime}</div>
+    </>
   )
 }
 

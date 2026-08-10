@@ -266,21 +266,35 @@ ipcMain.handle('keypress', async (e, data) => {
 })
 
 const triggerDoorKnock = (gameData, currentTime: number, who = '') => {
-  const availableCharacters = gameData.characterPositions.filter(c => {
-    const character = characters[c.name]
-    if (c.path !== null || character.conversations?.length === 0) return false
+  const currentDay = gameData.days.length - 1
 
-    if (character.activeHours) {
-      if (currentTime < character.activeHours.start || currentTime > character.activeHours.end) return false
-    }
+  // A forced `who` (debug/testing only) bypasses the normal eligibility
+  // rules entirely - day unlock, active hours, starter-convo completion -
+  // so a specific character can always be triggered on demand regardless of
+  // where you are in the game. Automatic/random selection still respects
+  // all of them.
+  let chosenCharacter
 
-    const starterConvos = character.conversations?.filter(convo => convo.starter)
+  if (who !== '') {
+    chosenCharacter = gameData.characterPositions.find((c) => c.name === who)
+  } else {
+    const availableCharacters = gameData.characterPositions.filter(c => {
+      const character = characters[c.name]
+      if (c.path !== null || character.conversations?.length === 0) return false
 
-    return starterConvos?.some(convo => gameData.completedConvos.indexOf(convo.id) === -1)
-  })
-  const chosenCharacter = who !== ''
-    ? availableCharacters.find((c) => c.name === who)
-    : availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
+      if ((character.unlockAfterDays ?? 0) > currentDay) return false
+
+      if (character.activeHours) {
+        if (currentTime < character.activeHours.start || currentTime > character.activeHours.end) return false
+      }
+
+      const starterConvos = character.conversations?.filter(convo => convo.starter)
+
+      return starterConvos?.some(convo => gameData.completedConvos.indexOf(convo.id) === -1)
+    })
+
+    chosenCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
+  }
 
   if (chosenCharacter === undefined) return
 
@@ -337,14 +351,22 @@ ipcMain.handle('convo-respond', (_e, response, id, game) => {
   if (!character) return
 
   const convo = character.conversations?.find(c => c.id === response.goto)
+  const respondedConvo = character.conversations?.find(c => c.id === id)
 
   const gameResult = addDayAction(game, playerActions.respond)
 
   if (convo) {
-    gameResult.completedConvos = [
-      ...gameResult.completedConvos,
-      id
-    ]
+    // Repeatable conversations never get marked completed, so they stay
+    // available both to talk to again (convo-start) and for future
+    // door-knock eligibility (triggerDoorKnock) - see characterData.tsx's
+    // Conversation.repeatable.
+    if (!respondedConvo?.repeatable) {
+      gameResult.completedConvos = [
+        ...gameResult.completedConvos,
+        id
+      ]
+    }
+
     mainWindow?.webContents.send('update-game-data', gameResult)
 
     return convo
@@ -400,6 +422,7 @@ ipcMain.handle('set-character-position', (_e, game, character, campable) => {
 })
 
 const pickSleepingSpace = (game: any, who: string) => {
+  mainWindow?.webContents.send('update-game-data', { inConversation: false })
   mainWindow?.webContents.send('redirect', `/${game.id}/set-character-position/${who}`)
 }
 
@@ -409,6 +432,7 @@ const leaveDoor = (game: any, who: string) => {
   }
   response.currentDoor = undefined
   response.forcedConversation = undefined
+  response.inConversation = false
   response.characterPositions = game.characterPositions.map(c => {
     if (c.name === who) {
       return {
