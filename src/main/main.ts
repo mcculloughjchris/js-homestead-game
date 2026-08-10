@@ -26,6 +26,7 @@ import { GameSettings, defaultSettings, loadSettings, saveSettings } from './gam
 import { PLAYER_INVENTORY_ID, addItem, hasItem, removeItem, transferItem } from '../static/inventory';
 import items from '../static/items';
 import inspectionManager from './inspection/InspectionManager';
+import { formatTime24Hour, getCurrentDecimalHours } from '../static/gameTime';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -45,7 +46,7 @@ const randomBetween = (min: number, max: number) => Math.floor(Math.random() * (
 // Add stat depletion/other side effects here as they're needed.
 onDayActionAdded((game, action, currentTime) => {
   if (parseInt(currentTime) > 800) {
-    triggerDoorKnock(game)
+    triggerDoorKnock(game, currentTime)
   }
 })
 
@@ -249,14 +250,18 @@ ipcMain.handle('keypress', async (e, data) => {
   }
 })
 
-const triggerDoorKnock = (gameData) => {
+const triggerDoorKnock = (gameData, currentTime: number) => {
   const availableCharacters = gameData.characterPositions.filter(c => {
     const character = characters[c.name]
-    if (c.path !== null || character.conversations.length === 0) return false
+    if (c.path !== null || character.conversations?.length === 0) return false
 
-    const starterConvos = character.conversations.filter(convo => convo.starter)
+    if (character.activeHours) {
+      if (currentTime < character.activeHours.start || currentTime > character.activeHours.end) return false
+    }
 
-    return starterConvos.some(convo => gameData.completedConvos.indexOf(convo.id) === -1)
+    const starterConvos = character.conversations?.filter(convo => convo.starter)
+
+    return starterConvos?.some(convo => gameData.completedConvos.indexOf(convo.id) === -1)
   })
   const chosenCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
 
@@ -280,7 +285,8 @@ const triggerDoorKnock = (gameData) => {
 
 // Trigger a door knock
 ipcMain.handle('trigger-door-knock', (_e, gameData) => {
-  triggerDoorKnock(gameData)
+  const currentTime = formatTime24Hour(getCurrentDecimalHours(gameData.days))
+  triggerDoorKnock(gameData, currentTime)
 })
 
 // Debug/testing only - looks an item up by its display name and adds one to the player's inventory

@@ -17,6 +17,11 @@ export interface Character {
   conversations?: Conversation[]
   /** Items this character has available to trade from the start of the game. */
   startingInventory?: Record<string, number>
+  /** Hours (24hr military time, e.g. 900 = 9:00AM, 1730 = 5:30PM) this character is willing to
+   *  door-knock during. Omit for no restriction (any time the day is open, per DAY_START_HOUR/
+   *  DAY_END_HOUR in gameTime.ts). Compared inclusively against the same currentTime value
+   *  onDayActionAdded listeners already receive - see triggerDoorKnock in main.ts. */
+  activeHours?: { start: number; end: number }
 }
 
 interface Characters {
@@ -138,6 +143,7 @@ const characters: Characters = {
   'Officer': {
     name: 'Officer',
     class: 'government',
+    activeHours: { start: 900, end: 1700 }, // business hours only
     conversations: [
       {
         id: 'officer_introduction',
