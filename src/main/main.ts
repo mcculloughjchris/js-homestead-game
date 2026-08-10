@@ -44,8 +44,10 @@ const randomBetween = (min: number, max: number) => Math.floor(Math.random() * (
 
 // Runs any time an action is appended to the current day (see dayActions.ts).
 // Add stat depletion/other side effects here as they're needed.
+const MAX_DOOR_KNOCKS_PER_DAY = 3
+
 onDayActionAdded((game, action, currentTime) => {
-  if (parseInt(currentTime) > 800) {
+  if (parseInt(currentTime) > 800 && (game.doorKnocksToday ?? 0) < MAX_DOOR_KNOCKS_PER_DAY) {
     triggerDoorKnock(game, currentTime)
   }
 })
@@ -273,13 +275,15 @@ const triggerDoorKnock = (gameData, currentTime: number) => {
     direction: chosenCharacter.name === c.name ? 'n' : c.direction
   }))
   gameData.currentDoor = chosenCharacter.name
+  gameData.doorKnocksToday = (gameData.doorKnocksToday ?? 0) + 1
 
   // Only the fields actually changed here - see the hunger/thirst listener
   // above for why sending the whole (possibly-stale) gameData races with
   // concurrent movement updates.
   mainWindow?.webContents.send('door-knock', {
     characterPositions: gameData.characterPositions,
-    currentDoor: gameData.currentDoor
+    currentDoor: gameData.currentDoor,
+    doorKnocksToday: gameData.doorKnocksToday
   })
 }
 
@@ -457,6 +461,7 @@ const startInspection = (game: any, officerName: string) => {
 
 ipcMain.handle('sleep', (_e, data) => {
   data.days.push([])
+  data.doorKnocksToday = 0
   mainWindow?.webContents.send('update-game-data', data)
 })
 
