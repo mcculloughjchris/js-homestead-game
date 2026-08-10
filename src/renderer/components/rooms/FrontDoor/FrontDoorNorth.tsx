@@ -5,7 +5,7 @@ const FrontDoorNorth = ({ game, setGame }: RenderedRoomProps) => {
   // const currentlyAtDoor = game.characterPositions.find(c => c.path === "front-door" && c.direction === "n")
   const currentlyAtDoor = game.currentDoor
 
-  if (currentlyAtDoor !== undefined) {
+  if (currentlyAtDoor) {
     return (
       <CharacterConversation
         game={game}

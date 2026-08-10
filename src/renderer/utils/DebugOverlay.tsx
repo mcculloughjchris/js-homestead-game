@@ -15,8 +15,8 @@ const DebugOverlay = () => {
       setActive(false)
     }
 
-    window.triggerDoorKnock = () => {
-      window.electron.ipcRenderer.invoke('trigger-door-knock', game)
+    window.triggerDoorKnock = (who = '') => {
+      window.electron.ipcRenderer.invoke('trigger-door-knock', game, who)
     }
 
     window.addItemToInventory = (itemName: string) => {

@@ -27,6 +27,7 @@ import { PLAYER_INVENTORY_ID, addItem, hasItem, removeItem, transferItem } from 
 import items from '../static/items';
 import inspectionManager from './inspection/InspectionManager';
 import { formatTime24Hour, getCurrentDecimalHours } from '../static/gameTime';
+import { createRNG } from '../static/rng';
 
 const savePath = path.join(app.getPath("appData"), "homesteading")
 
@@ -45,9 +46,21 @@ const randomBetween = (min: number, max: number) => Math.floor(Math.random() * (
 // Runs any time an action is appended to the current day (see dayActions.ts).
 // Add stat depletion/other side effects here as they're needed.
 const MAX_DOOR_KNOCKS_PER_DAY = 3
+// Each move only advances the clock ~18s (playerActions.move.timeCost), so
+// without a probability roll here a knock is guaranteed on essentially the
+// very next move once the clock ticks past DOOR_KNOCK_START_TIME - nowhere
+// near enough time to actually walk to the door first. Rolling a chance per
+// qualifying move instead spreads knocks out over the day.
+const DOOR_KNOCK_START_TIME = 800
+const DOOR_KNOCK_CHANCE_PER_TICK = 0.05
+const doorKnockRng = createRNG()
 
 onDayActionAdded((game, action, currentTime) => {
-  if (parseInt(currentTime) > 800 && (game.doorKnocksToday ?? 0) < MAX_DOOR_KNOCKS_PER_DAY) {
+  if (
+    parseInt(currentTime) > DOOR_KNOCK_START_TIME &&
+    (game.doorKnocksToday ?? 0) < MAX_DOOR_KNOCKS_PER_DAY &&
+    doorKnockRng.chance(DOOR_KNOCK_CHANCE_PER_TICK)
+  ) {
     triggerDoorKnock(game, currentTime)
   }
 })
@@ -252,7 +265,7 @@ ipcMain.handle('keypress', async (e, data) => {
   }
 })
 
-const triggerDoorKnock = (gameData, currentTime: number) => {
+const triggerDoorKnock = (gameData, currentTime: number, who = '') => {
   const availableCharacters = gameData.characterPositions.filter(c => {
     const character = characters[c.name]
     if (c.path !== null || character.conversations?.length === 0) return false
@@ -265,7 +278,9 @@ const triggerDoorKnock = (gameData, currentTime: number) => {
 
     return starterConvos?.some(convo => gameData.completedConvos.indexOf(convo.id) === -1)
   })
-  const chosenCharacter = availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
+  const chosenCharacter = who !== ''
+    ? availableCharacters.find((c) => c.name === who)
+    : availableCharacters[Math.floor(Math.random() * availableCharacters.length)]
 
   if (chosenCharacter === undefined) return
 
@@ -288,9 +303,9 @@ const triggerDoorKnock = (gameData, currentTime: number) => {
 }
 
 // Trigger a door knock
-ipcMain.handle('trigger-door-knock', (_e, gameData) => {
+ipcMain.handle('trigger-door-knock', (_e, gameData, who = '') => {
   const currentTime = formatTime24Hour(getCurrentDecimalHours(gameData.days))
-  triggerDoorKnock(gameData, currentTime)
+  triggerDoorKnock(gameData, currentTime, who)
 })
 
 // Debug/testing only - looks an item up by its display name and adds one to the player's inventory
@@ -357,6 +372,8 @@ ipcMain.handle('convo-end', (_e, id, game) => {
       case 'startInspection':
         // @ts-ignore
         return startInspection(game, ...args)
+      case 'fight':
+        return fight(game, ...args)
     }
   }
 })
@@ -457,6 +474,10 @@ const startInspection = (game: any, officerName: string) => {
       mainWindow?.webContents.send('update-game-data', finalGame)
     }
   })
+}
+
+const fight = (game, ...args) => {
+  console.log(args)
 }
 
 ipcMain.handle('sleep', (_e, data) => {

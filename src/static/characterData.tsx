@@ -196,19 +196,19 @@ const characters: Characters = {
         id: 'officer_caught_give_up',
         text: "Smart choice. Let's go.",
         starter: false,
-        afterContinue: "leaveDoor('Officer')"
+        afterContinue: "leaveDoor('Officer')" // TODO
       },
       {
         id: 'officer_caught_bribe',
         text: "...I suppose we could work something out.",
         starter: false,
-        afterContinue: "leaveDoor('Officer')"
+        afterContinue: "leaveDoor('Officer')" // TODO
       },
       {
         id: 'officer_caught_fight',
         text: "You really don't want to do that.",
         starter: false,
-        afterContinue: "leaveDoor('Officer')"
+        afterContinue: "fight('Officer')"
       }
     ]
   },
