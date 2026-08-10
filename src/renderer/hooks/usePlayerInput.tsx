@@ -10,6 +10,7 @@ const usePlayerInput = (game: any, setGame: (updater: any) => void) => {
   useEffect(() => {
     const handleKeyPress = async ({ key }) => {
       if (game.inspection?.active) return // player movement is disabled during an inspection
+      if (game.inConversation) return // can't move (or turn) away while dialogue is open
 
       const result = await window.electron.ipcRenderer.invoke("keypress", {
         key,
@@ -38,7 +39,7 @@ const usePlayerInput = (game: any, setGame: (updater: any) => void) => {
         }
       }
 
-      if (key.toLowerCase() === 'tab' && !game.inspection?.active) {
+      if (key.toLowerCase() === 'tab' && !game.inspection?.active && !game.inConversation) {
         navigate(`/${game.id}/inventory`)
       }
     }

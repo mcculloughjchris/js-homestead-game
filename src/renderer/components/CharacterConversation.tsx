@@ -24,6 +24,14 @@ const CharacterConversation = ({ game, setGame, characterName, triggerLabel = "T
     }
   }, [ game.forcedConversation, characterName ])
 
+  // Mirror "is dialogue actually open" into shared game state - currentDoor
+  // alone doesn't distinguish "character present, not yet talked to" from
+  // "mid-conversation", but usePlayerInput needs that distinction to know
+  // when to block movement.
+  useEffect(() => {
+    setGame(prevGame => ({ ...prevGame, inConversation: conversationData !== null }))
+  }, [ conversationData ])
+
   const startConversation = async () => {
     const result = await window.electron.ipcRenderer.invoke('convo-start', characterName, game)
 
