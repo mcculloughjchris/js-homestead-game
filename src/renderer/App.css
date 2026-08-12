@@ -91,14 +91,14 @@ button {
   pointer-events: none;
 }
 
-.time {
+.overlay .time {
   position: fixed;
   bottom: 13rem;
   right: 1rem;
   font-size: 24px;
 }
 
-.day {
+.overlay .day {
   position: fixed;
   bottom: 15rem;
   right: 1rem;
@@ -527,6 +527,16 @@ button {
   animation-duration: 2233ms;
 }
 
+.knock3-animation {
+  animation-name: normal-knock-1;
+  animation-duration: 1212ms;
+}
+
+.knock4-animation {
+  animation-name: normal-knock-2;
+  animation-duration: 916ms;
+}
+
 @keyframes hard-knock-1 {
   0% {
     transform: scale(1);
@@ -665,6 +675,117 @@ button {
   }
 
   77% {
+    transform: scale(1);
+  }
+}
+
+@keyframes normal-knock-1 {
+  0% {
+    transform: scale(1);
+  }
+
+  /* knock 1 */
+  1% {
+    transform: scale(1);
+  }
+
+  5% {
+    transform: scale(1.25);
+  }
+
+  10% {
+    transform: scale(1);
+  }
+
+  /* knock 2 */
+  20% {
+    transform: scale(1);
+  }
+
+  24% {
+    transform: scale(1.25);
+  }
+
+  29% {
+    transform: scale(1);
+  }
+
+  /* knock 3 */
+  37% {
+    transform: scale(1);
+  }
+
+  41% {
+    transform: scale(1.25);
+  }
+
+  46% {
+    transform: scale(1);
+  }
+
+  /* knock 4 */
+  56% {
+    transform: scale(1);
+  }
+
+  60% {
+    transform: scale(1.25);
+  }
+
+  65% {
+    transform: scale(1);
+  }
+
+  /* knock 5 */
+  76% {
+    transform: scale(1);
+  }
+
+  80% {
+    transform: scale(1.25);
+  }
+
+  85% {
+    transform: scale(1);
+  }
+}
+
+@keyframes normal-knock-2 {
+  0% {
+    transform: scale(1);
+  }
+
+  4% {
+    transform: scale(1.25);
+  }
+
+  9% {
+    transform: scale(1);
+  }
+
+  /* knock 2 */
+  23% {
+    transform: scale(1);
+  }
+
+  27% {
+    transform: scale(1.25);
+  }
+
+  32% {
+    transform: scale(1);
+  }
+
+  /* knock 3 */
+  48% {
+    transform: scale(1);
+  }
+
+  52% {
+    transform: scale(1.25);
+  }
+
+  57% {
     transform: scale(1);
   }
 }
