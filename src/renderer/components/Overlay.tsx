@@ -1,6 +1,7 @@
 import { gameMap } from "../../static/mapData"
 import { PlayerAction } from "../../static/playerActions"
 import Clock from "./Clock"
+import PeepHole from "./PeepHole"
 
 interface OverlayProps {
   currentLocation: string
@@ -36,6 +37,7 @@ const Overlay = ({ currentLocation, currentDirection, days }: OverlayProps) => {
           )
         })}
       </div>
+      <PeepHole />
     </div>
   )
 }

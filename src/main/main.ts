@@ -265,6 +265,11 @@ ipcMain.handle('keypress', async (e, data) => {
   }
 })
 
+// Real wall-clock time (not in-game time) the player has to answer the door
+// before whoever's knocking gives up and leaves.
+const DOOR_KNOCK_ANSWER_TIMEOUT_MS = 60000
+let pendingDoorKnockTimeout: ReturnType<typeof setTimeout> | null = null
+
 const triggerDoorKnock = (gameData, currentTime: number, who = '') => {
   const currentDay = gameData.days.length - 1
 
@@ -314,6 +319,22 @@ const triggerDoorKnock = (gameData, currentTime: number, who = '') => {
     currentDoor: gameData.currentDoor,
     doorKnocksToday: gameData.doorKnocksToday
   })
+
+  // Give up and leave if the player doesn't answer in time. convo-start
+  // clears this as soon as the player actually answers - if it fires, we
+  // know they never did. Broadcasting a full stale characterPositions here
+  // (captured now, applied 60s later) would risk clobbering unrelated
+  // changes made in the meantime, so the renderer does the actual reset
+  // itself, safely, against whatever state is current when it lands - see
+  // handleDoorKnockTimeout in useGame.tsx.
+  if (pendingDoorKnockTimeout) clearTimeout(pendingDoorKnockTimeout)
+
+  const knockingCharacter = chosenCharacter.name
+
+  pendingDoorKnockTimeout = setTimeout(() => {
+    pendingDoorKnockTimeout = null
+    mainWindow?.webContents.send('door-knock-timeout', knockingCharacter)
+  }, DOOR_KNOCK_ANSWER_TIMEOUT_MS)
 }
 
 // Trigger a door knock
@@ -335,6 +356,13 @@ ipcMain.handle('trigger-add-item-to-inventory', (_e, gameData, itemName: string)
 
 // Start a conversation
 ipcMain.handle('convo-start', (_e, characterName, game) => {
+  // The player answered in time - cancel the door-knock timeout so it
+  // doesn't kick this character out from under an active conversation later.
+  if (pendingDoorKnockTimeout) {
+    clearTimeout(pendingDoorKnockTimeout)
+    pendingDoorKnockTimeout = null
+  }
+
   const character = characters[characterName]
   if (!character) return
 

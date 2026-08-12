@@ -37,11 +37,31 @@ export const GameProvider = () => {
     navigate(location)
   }
 
+  // The player never answered in time - reset just that character's
+  // position against whatever state is actually current when this lands
+  // (not a stale snapshot from when the knock happened 60s ago), and only
+  // if they're still the one at the door (guards against acting on a
+  // since-superseded knock).
+  const handleDoorKnockTimeout = (characterName: string) => {
+    setGame(prevGame => {
+      if (prevGame.currentDoor !== characterName) return prevGame
+
+      return {
+        ...prevGame,
+        currentDoor: undefined,
+        characterPositions: prevGame.characterPositions.map((c: any) => (
+          c.name === characterName ? { ...c, path: null, direction: null } : c
+        ))
+      }
+    })
+  }
+
   useEffect(() => {
     window.addEventListener('saved', handleGameDidSave)
     window.addEventListener('update-game-data', handleUpdateGameData)
     window.electron.ipcRenderer.on('update-game-data', handleElectronUpdateGameData)
     window.electron.ipcRenderer.on('redirect', handleElectronRedirect)
+    window.electron.ipcRenderer.on('door-knock-timeout', handleDoorKnockTimeout)
 
     return () => {
       window.removeEventListener('saved', handleGameDidSave)

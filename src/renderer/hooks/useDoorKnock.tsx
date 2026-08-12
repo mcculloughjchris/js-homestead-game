@@ -6,8 +6,17 @@ const useDoorKnock = () => {
   const [ intervalState, setIntervalState ] = useState<NodeJS.Timeout>()
 
   const handleKnockingAudio = () => {
-    const n = Math.floor(Math.random() * 4)
-    audio.sfx.play(`knock${n}`)
+    audio.sfx.play(`knock2`)
+    // const n = Math.floor(Math.random() * 4)
+    // audio.sfx.play(`knock${n}`)
+
+    const ev = new CustomEvent('peep-hole-animation', {
+      detail: {
+        animation: 'knock2'
+      }
+    })
+
+    window.dispatchEvent(ev)
   }
 
   useEffect(() => {
