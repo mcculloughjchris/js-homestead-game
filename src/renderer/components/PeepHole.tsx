@@ -19,6 +19,8 @@ const PeepHole = () => {
 
   if (loading) return null
 
+  if (game.inConversation === true) return null
+
   return (
     <div className={`peep-hole ${currentAnimation !== "" ? `${currentAnimation}-animation` : ""}`}>
       <img src={peepHoleCoverImage} className={`peep-hole-cover ${game.currentDoor !== undefined ? "uncovered" : ""}`} />

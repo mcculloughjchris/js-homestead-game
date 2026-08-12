@@ -12,6 +12,13 @@ const playerActions: PlayerActions = {
     id: 'move',
     timeCost: 0.005
   },
+  // Distinct from 'move' so end-of-game statistics (e.g. "steps taken") can
+  // tell player movement apart from officer movement during an inspection -
+  // see InspectionManager, which logs this instead of 'move'.
+  'officerMove': {
+    id: 'officerMove',
+    timeCost: 0.005
+  },
   'plant': {
     id: 'plant',
     timeCost: 0.25

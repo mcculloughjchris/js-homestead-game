@@ -3,6 +3,8 @@ import { getInventory } from '../../static/inventory'
 import { getItem } from '../../static/items'
 import { gameMap, Direction } from '../../static/mapData'
 import { createRNG, RNG } from '../../static/rng'
+import playerActions from '../../static/playerActions'
+import { addDayAction } from '../dayActions'
 import { directionBetween, findRoutePath } from './officerRouting'
 
 export type InspectionPhase = 'walking' | 'paused' | 'searching' | 'caught' | 'complete'
@@ -207,6 +209,12 @@ class InspectionManager {
     }
 
     if (step.type === 'walk') {
+      // Each step the officer takes costs time too, same as a player move -
+      // keeps the clock advancing while the player watches the inspection.
+      // Logged as a distinct action (not 'move') so future statistics don't
+      // mistake officer steps for player steps.
+      session.game = addDayAction(session.game, playerActions.officerMove)
+
       this.updateState(session, {
         phase: 'walking',
         currentLocation: step.toPath,
