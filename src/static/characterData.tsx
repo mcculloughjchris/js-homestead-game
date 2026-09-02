@@ -1,12 +1,16 @@
 export interface Response {
   text: string
   goto?: string
+  /** Same method('arg') callback mechanism as Conversation.afterContinue, but fires as soon as
+   *  this response is picked, alongside navigating to `goto` - see runAfterContinue in main.ts. */
+  afterContinue?: string
 }
 
 export interface Conversation {
   id: string
   text: string
   starter: boolean
+  path?: string
   responses?: Response[]
   afterContinue?: string
   repeatable?: boolean
@@ -57,30 +61,216 @@ const characters: Characters = {
         id: "backpacker_introduction_thanks",
         text: "Thanks! You're a life saver!",
         starter: false,
-        afterContinue: "pickSleepingSpace('backpacker')"
+        afterContinue: "pickSleepingSpace('Backpacker')"
       },
       {
         id: "backpacker_introduction_no",
         text: "Thank you anyways.",
         starter: false,
         afterContinue: "leaveDoor('backpacker')"
+      },
+      {
+        id: "backpacker_request_2",
+        text: "Hey, man I really need a place to crash. Can you help me out?",
+        starter: true,
+        responses: [
+          {
+            text: "Ok, yeah come on in.",
+            goto: "backpacker_introduction_thanks"
+          },
+          {
+            text: "No, leave me alone please.",
+            goto: "backpacker_request_2_no"
+          }
+        ]
+      },
+      {
+        id: "backpacker_request_2_no",
+        text: "Damn. Thanks anyways.",
+        starter: false,
+        afterContinue: "leaveDoor('Backpacker')"
+      },
+      {
+        id: "backpacker_request_3",
+        text: "I need help, seriously, can you let me stay here for a bit?",
+        starter: true,
+        responses: [
+          {
+            text: "Fine",
+            goto: "backpacker_introduction_thanks"
+          },
+          {
+            text: "NO",
+            goto: "backpacker_request_3_no_1"
+          }
+        ]
+      },
+      {
+        id: "backpacker_request_3_no_1",
+        text: "Go to hell.",
+        starter: false,
+        responses: [
+          {
+            text: "Will do.",
+            afterContinue: "leaveDoor('Backpacker')"
+          }
+        ]
+      },
+      {
+        id: "backpacker_inside_1_1",
+        text: "Thanks again for the help! I’ll try to let you know if there’s any pigs around.",
+        starter: true,
+        responses: [
+          {
+            text: "Cool!",
+          }
+        ]
+      },
+      {
+        id: "backpacker_inside_2_1",
+        text: "You have no idea how seriously you saved my ass, thanks again.",
+        starter: true,
+        responses: [
+          {
+            text: "How so?",
+            goto: "backpacker_inside_2_2"
+          }
+        ]
+      },
+      {
+        id: "backpacker_inside_2_2",
+        text: "I’m on my way to Canada, what’s left of it anyways, and I got stopped on the way. I ran, but those pigs are slow as hell.",
+        starter: false,
+        responses: [
+          {
+            text: "I didn’t know you’re running from the law, get out.",
+          },
+          {
+            text: "Cool, you can stick around."
+          }
+        ]
+      },
+      {
+        id: "backpacker_couch_1_1",
+        text: "I didn’t sit down for so long while on the run, this couch rocks!",
+        starter: true,
+        path: "lroom4/n",
+        responses: [
+          {
+            text: "I’m just glad to help",
+          },
+          {
+            text: "There's rocks in the couch?",
+            goto: "backpacker_couch_1_2"
+          }
+        ]
+      },
+      {
+        id: "backpacker_couch_1_2",
+        text: "What?",
+        starter: false,
+        path: "lroom4/n",
+      },
+      {
+        id: "backpacker_desk_1_1",
+        text: "I’m not much of a writer but boy am I glad to be sitting down",
+        starter: true,
+        responses: [
+          {
+            text: "I'm just glad to help"
+          }
+        ]
       }
     ]
   },
   'Nurse': {
     name: 'Nurse',
     class: 'traveler',
-    conversations: []
+    conversations: [
+      {
+        id: "nurse_introduction_1",
+        text: "Hello, I’m Nancy. I was working at the hospital but it shut down last month and I ended up being late on my rent. Now I’m looking for a place to stay.",
+        starter: true,
+        responses: [
+          {
+            text: "You can stay here, come on in.",
+            afterContinue: "pickSleepingSpace('Nurse')"
+          },
+          {
+            text: "I can’t let you in, sorry.",
+            afterContinue: "leaveDoor('Nurse')"
+          }
+        ]
+      },
+      {
+        id: "nurse_inside_1",
+        text: "I’m so glad to not be on the streets. If anyone in the house gets sick or hurt I can help out.",
+        starter: false,
+        responses: [
+          {
+            text: "Thanks!"
+          }
+        ]
+      }
+    ]
   },
   'Musician': {
     name: 'Musician',
     class: 'traveler',
-    conversations: []
+    conversations: [
+    ]
   },
   'Collector': {
     name: 'Collector',
     class: 'traveler',
-    conversations: []
+    conversations: [
+      {
+        id: "collector_introduction_1_1",
+        text: "Hello! I’m looking for a place to hide.",
+        starter: true,
+        responses: [
+          {
+            text: "Why?",
+            goto: "collector_introduction_1_2"
+          },
+          {
+            text: "Beat it",
+            afterContinue: "leaveDoor('Collector')"
+          }
+        ]
+      },
+      {
+        id: "collector_introduction_1_2",
+        text: "I collect artwork and have pieces the authorities are looking for.",
+        starter: false,
+        responses: [
+          {
+            text: "Wealth hoarding? See ya",
+            goto: "collector_introduction_1_3"
+          }
+        ]
+      },
+      {
+        id: "collector_introduction_1_3",
+        text: "I have pieces that could be used to bribe officers!",
+        starter: false,
+        responses: [
+          {
+            text: "Fine, come in.",
+            afterContinue: "pickSleepingSpace('Collector')"
+          },
+          {
+            text: "Nope, bye!",
+            afterContinue: "leaveDoor('Collector')"
+          }
+        ]
+      },
+      {
+        id: "collector_inside_1",
+        text: "Thank you for taking me in.",
+        starter: true
+      }
+    ]
   },
   'Beekeeper': {
     name: 'Beekeeper',
@@ -115,6 +305,27 @@ const characters: Characters = {
       {
         id: 'beekeeper_introduction_3',
         text: "Haha! I'll catch you around ok?",
+        starter: false,
+        afterContinue: "leaveDoor('Beekeeper')"
+      },
+      {
+        id: "beekeeper_trade_offer_1",
+        text: "Hi! I just wanted to pop by and see if you wanted to trade!",
+        starter: true,
+        responses: [
+          {
+            text: "Yes!",
+            afterContinue: "start_trade()"
+          },
+          {
+            text: "No thanks.",
+            goto: "beekeeper_trade_offer_no"
+          }
+        ]
+      },
+      {
+        id: "beekeeper_trade_offer_no",
+        text: "Ah, maybe next time!",
         starter: false,
         afterContinue: "leaveDoor('Beekeeper')"
       }

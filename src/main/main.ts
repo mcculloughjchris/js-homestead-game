@@ -369,9 +369,38 @@ ipcMain.handle('convo-start', (_e, characterName, game) => {
   // no introduction yet, start that convo
   const introConvo = `${character.name.toLowerCase()}_introduction`
   if (game.completedConvos.indexOf(introConvo) === -1) {
-    return character.conversations?.find(c => c.id === introConvo)
+    const convo = character.conversations?.find(c => c.id === introConvo)
+    if (!convo) return
+
+    // path (if set) restricts where this conversation can happen - empty/unset means anywhere.
+    if (convo.path && convo.path !== game.currentLocation) return
+
+    return convo
   }
 })
+
+// Parses and dispatches a "method('arg')" callback string - shared by
+// Conversation.afterContinue (convo-end) and Response.afterContinue
+// (convo-respond) so both use the exact same mechanism.
+const runAfterContinue = (afterContinue: string | undefined, game: any) => {
+  if (!afterContinue) return
+
+  const [ method, a ] = afterContinue.split('(')
+  const args: string[] = a.replace(')', '').split('\'').filter(f => f !== "")
+
+  switch (method) {
+    case 'pickSleepingSpace':
+      // @ts-ignore
+      return pickSleepingSpace(game, ...args)
+    case 'leaveDoor':
+      return leaveDoor(game, ...args)
+    case 'startInspection':
+      // @ts-ignore
+      return startInspection(game, ...args)
+    case 'fight':
+      return fight(game, ...args)
+  }
+}
 
 // Respond to a conversation
 ipcMain.handle('convo-respond', (_e, response, id, game) => {
@@ -379,6 +408,11 @@ ipcMain.handle('convo-respond', (_e, response, id, game) => {
   if (!character) return
 
   const convo = character.conversations?.find(c => c.id === response.goto)
+
+  // path (if set) restricts where this conversation can happen - empty/unset means anywhere.
+  // Checked before addDayAction so a rejected transition doesn't still cost time.
+  if (convo?.path && convo.path !== game.currentLocation) return
+
   const respondedConvo = character.conversations?.find(c => c.id === id)
 
   const gameResult = addDayAction(game, playerActions.respond)
@@ -397,6 +431,8 @@ ipcMain.handle('convo-respond', (_e, response, id, game) => {
 
     mainWindow?.webContents.send('update-game-data', gameResult)
 
+    runAfterContinue(response.afterContinue, gameResult)
+
     return convo
   }
 })
@@ -408,24 +444,7 @@ ipcMain.handle('convo-end', (_e, id, game) => {
 
   const convo = character.conversations?.find(c => c.id === id)
 
-  if (convo?.afterContinue) {
-    const [ method, a ] = convo.afterContinue.split('(')
-    const args: string[] = a.replace(')', '').split('\'').filter(f => f !== "")
-
-    switch (method) {
-      case 'pickSleepingSpace':
-        // @ts-ignore
-        return pickSleepingSpace(game, ...args)
-        break;
-      case 'leaveDoor':
-        return leaveDoor(game, ...args)
-      case 'startInspection':
-        // @ts-ignore
-        return startInspection(game, ...args)
-      case 'fight':
-        return fight(game, ...args)
-    }
-  }
+  return runAfterContinue(convo?.afterContinue, game)
 })
 
 ipcMain.handle('set-character-position', (_e, game, character, campable) => {
