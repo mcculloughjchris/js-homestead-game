@@ -297,6 +297,10 @@ const characters: Characters = {
         starter: false,
         responses: [
           {
+            text: "Let's trade.",
+            afterContinue: "trade"
+          },
+          {
             text: "Cool, but you didn't give me your name?",
             goto: "beekeeper_introduction_3"
           }

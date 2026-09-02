@@ -14,7 +14,7 @@ import { useEffect } from "react"
 // `.screen`/`.title-screen` backgrounds are 125% (overscan = 25%), and a
 // centered (50%) base has 50 points of headroom each way, so strength=20
 // (±10 points, ~±2.5% of container size) is comfortably inside that.
-const useMouseParallax = (strength: number = 20) => {
+const useMouseParallax = (strength: number = 100) => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const xRatio = (e.clientX / window.innerWidth) - 0.5 // -0.5 (left) to 0.5 (right)

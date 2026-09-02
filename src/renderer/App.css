@@ -474,6 +474,17 @@ button {
   background-image: url('../../assets/screens/FrontDoorNorth.jpg');
 }
 
+.front-door-north.in-conversation {
+  background-image: url('../../assets/screens/FrontDoorNorth_Open.jpg');
+}
+
+.front-door-north.in-conversation.Backpacker {
+  background-image: url('../../assets/characters/Backpacker.png'), url('../../assets/screens/FrontDoorNorth_Open.jpg');
+  background-size: 10%, 125%;
+  background-position: 0 0, calc(50% + var(--parallax-x, 0%)) calc(50% + var(--parallax-y, 0%));
+  background-repeat: no-repeat;
+}
+
 .lroom0-west {
   background-image: url('../../assets/screens/LRoom0West.jpg');
 }

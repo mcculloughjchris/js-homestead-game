@@ -8,9 +8,10 @@ interface CharacterConversationProps {
   setGame: (updater: any) => void
   characterName: string
   triggerLabel?: string
+  conversationCallback?: () => void
 }
 
-const CharacterConversation = ({ game, setGame, characterName, triggerLabel = "Talk" }: CharacterConversationProps) => {
+const CharacterConversation = ({ game, setGame, characterName, triggerLabel = "Talk", conversationCallback = () => { } }: CharacterConversationProps) => {
   const [ conversationData, setConversationData ] = useState<Conversation | null>(null)
   const [ trading, setTrading ] = useState(false)
 
@@ -41,6 +42,14 @@ const CharacterConversation = ({ game, setGame, characterName, triggerLabel = "T
   }
 
   const handleResponseButtonClick = async (r: Response) => {
+    // 'trade' is a purely client-side UI transition (open the trade screen),
+    // not a game-state mutation, so it's handled directly here rather than
+    // going through main.ts's runAfterContinue like other afterContinue values.
+    if (r.afterContinue === 'trade') {
+      setTrading(true)
+      return
+    }
+
     const result = await window.electron.ipcRenderer.invoke('convo-respond', r, conversationData?.id, game)
 
     if (result) {
@@ -93,7 +102,6 @@ const CharacterConversation = ({ game, setGame, characterName, triggerLabel = "T
   return (
     <div>
       <button onClick={startConversation}>{triggerLabel}</button>
-      <button onClick={() => setTrading(true)}>Trade</button>
     </div>
   )
 }
